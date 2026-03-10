@@ -14,11 +14,11 @@ return new class extends Migration
 
             $table->string('slug',150)->unique();
 
-            $table->text('description')->nullable();
+            $table->string('description',255)->nullable();
 
-            $table->string('file_path');
+            $table->string('file_path',255);
 
-            $table->string('cover_image')->nullable();
+            $table->string('cover_image',255)->nullable();
 
             $table->unsignedInteger('size_bytes')->nullable();
 
