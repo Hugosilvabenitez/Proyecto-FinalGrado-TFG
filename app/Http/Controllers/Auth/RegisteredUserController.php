@@ -37,10 +37,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $cleanSeed = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($request['email']));
+        $seed = substr($cleanSeed, 0, 20);
+        $avatarUrl = "https://api.dicebear.com/9.x/fun-emoji/svg?seed={$seed}&backgroundColor=1d1440&radius=50";
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'avatar_url' => $avatarUrl
         ]);
 
         event(new Registered($user));

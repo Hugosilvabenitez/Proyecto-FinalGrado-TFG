@@ -29,9 +29,10 @@ use HasFactory, Notifiable;
 * @var list<string>
 */
     protected $fillable = [
-    'username',
+    'name',
     'email',
     'password',
+    'avatar_url',
     'email_verified_at',
     'remember_token',
     ];

@@ -17,26 +17,30 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('users')->insert([
         [
-        'username' => 'admin',
+        'name' => 'admin',
         'email' => 'admin@example.com',
+        'avatar_url' => 'null',
         'password' => Hash::make('admin123'),
         'email_verified_at' => now(),
         ],
         [
-        'username' => 'hugo',
+        'name' => 'hugo',
         'email' => 'hugo@example.com',
+        'avatar_url' => 'null',
         'password' => Hash::make('hugo123'),
         'email_verified_at' => now(),
         ],
         [
-        'username' => 'miguel',
+        'name' => 'miguel',
         'email' => 'miguel@example.com',
+        'avatar_url' => 'null',
         'password' => Hash::make('miguel123'),
         'email_verified_at' => now(),
         ],
         [
-        'username' => 'guti',
+        'name' => 'guti',
         'email' => 'guti@example.com',
+        'avatar_url' => 'null',
         'password' => Hash::make('guti123'),
         'email_verified_at' => now(),
         ]

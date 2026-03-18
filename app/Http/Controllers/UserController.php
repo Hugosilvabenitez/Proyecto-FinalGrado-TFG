@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')
-            ->select('id', 'username', 'email', 'created_at')
+            ->select('id', 'name', 'email', 'created_at')
             ->paginate(15);
 
         return Inertia::render('User/IndexUser', [
@@ -41,14 +41,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'roles' => 'array'
         ]);
 
         $user = User::create([
-            'username' => $validatedData['username'],
+            'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
         ]);
@@ -96,7 +96,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
      $validated = $request->validate([
-            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
+            'name' => 'required|string|max:50|unique:users,name,' . $user->id,
             'email'    => 'required|email|max:100|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'roles'    => 'nullable|array',
@@ -104,7 +104,7 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'username' => $validated['username'],
+            'name' => $validated['name'],
             'email'    => $validated['email'],
             ...(isset($validated['password'])
                 ? ['password' => Hash::make($validated['password'])]
