@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')
-            ->select('id', 'name', 'email', 'created_at')
+            ->select('id', 'username', 'email', 'created_at')
             ->paginate(15);
 
         return Inertia::render('User/IndexUser', [
