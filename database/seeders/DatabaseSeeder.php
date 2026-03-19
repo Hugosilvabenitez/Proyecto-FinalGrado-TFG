@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rom;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,31 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-        [
-        'username' => 'admin',
-        'email' => 'admin@example.com',
-        'password' => Hash::make('admin123'),
-        'email_verified_at' => now(),
-        ],
-        [
-        'username' => 'hugo',
-        'email' => 'hugo@example.com',
-        'password' => Hash::make('hugo123'),
-        'email_verified_at' => now(),
-        ],
-        [
-        'username' => 'miguel',
-        'email' => 'miguel@example.com',
-        'password' => Hash::make('miguel123'),
-        'email_verified_at' => now(),
-        ],
-        [
-        'username' => 'guti',
-        'email' => 'guti@example.com',
-        'password' => Hash::make('guti123'),
-        'email_verified_at' => now(),
-        ]
+        $this->call([
+            UserSeeder::class,
+            RolSeeder::class,
+            RolUserSeeder::class,
+            EmulatorSeeder::class,
+            RomSeeder::class,
+            UserRomSeeder::class,
+            UserSettingSeeder::class,
+            SaveStateSeeder::class,
+            AuditLogSeeder::class,
         ]);
     }
 }
