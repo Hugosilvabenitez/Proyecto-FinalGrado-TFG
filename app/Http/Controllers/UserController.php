@@ -41,21 +41,22 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:50|unique:users',
+            'email'    => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'array'
+            'roles'    => 'nullable|array',
+            'roles.*'  => 'exists:roles,id',
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
+            'username' => $validatedData['username'],
+            'email'    => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         // Asignar roles si se han seleccionado
-        if (!empty($validated['roles'])) {
-            $user->roles()->sync($validated['roles']);
+        if (!empty($validatedData['roles'])) {
+            $user->roles()->sync($validatedData['roles']);
         }
 
         // Crear configuración por defecto
@@ -96,7 +97,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
      $validated = $request->validate([
-            'name' => 'required|string|max:50|unique:users,name,' . $user->id,
+            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
             'email'    => 'required|email|max:100|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'roles'    => 'nullable|array',
@@ -104,7 +105,7 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'name' => $validated['name'],
+            'username' => $validated['username'],
             'email'    => $validated['email'],
             ...(isset($validated['password'])
                 ? ['password' => Hash::make($validated['password'])]

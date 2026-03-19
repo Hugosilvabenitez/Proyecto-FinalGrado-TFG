@@ -8,7 +8,7 @@ interface Role {
 
 interface User {
   id: number
-  name: string
+  username: string
   email: string
   created_at: string
   roles: Role[]
@@ -68,7 +68,7 @@ function deleteUser(id: number) {
               class="border-t border-gray-700 hover:bg-gray-750 transition"
             >
               <td class="px-6 py-4 text-gray-400">{{ user.id }}</td>
-              <td class="px-6 py-4 font-medium">{{ user.name }}</td>
+              <td class="px-6 py-4 font-medium">{{ user.username }}</td>
               <td class="px-6 py-4 text-gray-400">{{ user.email }}</td>
               <td class="px-6 py-4">
                 <span
