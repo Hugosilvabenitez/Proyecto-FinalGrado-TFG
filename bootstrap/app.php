@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            '/chat-ia',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
