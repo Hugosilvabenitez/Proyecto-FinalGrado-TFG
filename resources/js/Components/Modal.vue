@@ -1,6 +1,15 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
+/**
+* Modal Tpl
+* 
+* @author Miguel Gordon Jiménez <mgorjim1003@g.educaand.es>
+* @date 2026-03-22
+* 
+* This file contains all the code for generate the modal template of Gameflux's project.
+*/
+
 const props = defineProps({
     show: {
         type: Boolean,
@@ -112,7 +121,7 @@ const maxWidthClass = computed(() => {
             >
                 <div
                     v-show="show"
-                    class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full"
+                    class="mb-6 transform overflow-hidden rounded-3xl shadow-xl transition-all sm:mx-auto sm:w-full"
                     :class="maxWidthClass"
                 >
                     <slot v-if="showSlot" />

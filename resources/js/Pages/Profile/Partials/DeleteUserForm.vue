@@ -8,6 +8,15 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
+/**
+* Delete User Form Tpl
+* 
+* @author Miguel Gordon Jiménez <mgorjim1003@g.educaand.es>
+* @date 2026-03-22
+* 
+* This file contains all the code for generate the delete user template of Gameflux's project.
+*/
+
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
 
@@ -39,39 +48,38 @@ const closeModal = () => {
 </script>
 
 <template>
-    <section class="space-y-6">
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Delete Account
+    <section class="space-y-4">
+        <header class="space-y-2">
+            <h2 class="text-lg font-semibold text-red-400 tracking-tight">
+                Eliminar cuenta
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600">
-                Once your account is deleted, all of its resources and data will
-                be permanently deleted. Before deleting your account, please
-                download any data or information that you wish to retain.
+            <p class="text-sm text-slate-300">
+                Al eliminar tu cuenta se borrarán permanentemente tus partidas, logros y cualquier dato asociado. Esta acción no se puede deshacer.
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <DangerButton
+            class="rounded-2xl bg-gradient-to-r from-rose-500 to-red-500 border-0 px-4 py-2 text-sm font-semibold shadow-[0_0_18px_rgba(248,113,113,0.6)] hover:shadow-[0_0_26px_rgba(248,113,113,0.8)]"
+            @click="confirmUserDeletion"
+        >
+            Eliminar cuenta
+        </DangerButton>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <h2
-                    class="text-lg font-medium text-gray-900"
-                >
-                    Are you sure you want to delete your account?
+        <Modal :show="confirmingUserDeletion" @close="closeModal" max-width="md">
+            <div class="bg-slate-950 text-slate-100 rounded-3xl border border-red-500/40 shadow-[0_0_40px_rgba(248,113,113,0.6)] p-6 sm:p-7">
+                <h2 class="text-lg font-semibold text-red-400 mb-2">
+                    ¿Seguro que quieres borrar tu cuenta?
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Please enter your password to
-                    confirm you would like to permanently delete your account.
+                <p class="text-sm text-slate-300">
+                    Esta acción eliminará todos tus datos en GameFlux. Introduce tu contraseña para confirmar que quieres eliminar tu cuenta de forma permanente.
                 </p>
 
                 <div class="mt-6">
                     <InputLabel
                         for="password"
-                        value="Password"
+                        value="Contraseña"
                         class="sr-only"
                     />
 
@@ -80,26 +88,29 @@ const closeModal = () => {
                         ref="passwordInput"
                         v-model="form.password"
                         type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
+                        class="mt-1 block w-full rounded-2xl border border-slate-700 bg-slate-900/80 text-slate-100 focus:border-red-400 focus:ring-red-400"
+                        placeholder="Introduce tu contraseña"
                         @keyup.enter="deleteUser"
                     />
 
                     <InputError :message="form.errors.password" class="mt-2" />
                 </div>
 
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal">
-                        Cancel
+                <div class="mt-6 flex justify-end gap-3">
+                    <SecondaryButton
+                        class="rounded-2xl border border-slate-600 bg-slate-800/80 text-slate-200 hover:border-slate-400 hover:bg-slate-700"
+                        @click="closeModal"
+                    >
+                        Cancelar
                     </SecondaryButton>
 
                     <DangerButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
+                        class="rounded-2xl bg-gradient-to-r from-rose-500 to-red-500 border-0 px-4 py-2 text-sm font-semibold shadow-[0_0_18px_rgba(248,113,113,0.6)] hover:shadow-[0_0_26px_rgba(248,113,113,0.8)]"
+                        :class="{ 'opacity-40': form.processing }"
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
-                        Delete Account
+                        Eliminar definitivamente
                     </DangerButton>
                 </div>
             </div>
