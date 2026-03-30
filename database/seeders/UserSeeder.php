@@ -15,28 +15,32 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
         [
-        'username' => 'admin',
+        'name' => 'admin',
         'email' => 'admin@example.com',
         'password' => Hash::make('admin123'),
         'email_verified_at' => now(),
+        'avatar_url' => 'https://api.dicebear.com/9.x/fun-emoji/svg'
         ],
         [
-        'username' => 'hugo',
+        'name' => 'hugo',
         'email' => 'hugo@example.com',
         'password' => Hash::make('hugo123'),
         'email_verified_at' => now(),
+        'avatar_url' => 'https://api.dicebear.com/9.x/fun-emoji/svg'
         ],
         [
-        'username' => 'miguel',
+        'name' => 'miguel',
         'email' => 'miguel@example.com',
         'password' => Hash::make('miguel123'),
         'email_verified_at' => now(),
+        'avatar_url' => 'https://api.dicebear.com/9.x/fun-emoji/svg'
         ],
         [
-        'username' => 'guti',
+        'name' => 'guti',
         'email' => 'guti@example.com',
         'password' => Hash::make('guti123'),
         'email_verified_at' => now(),
+        'avatar_url' => 'https://api.dicebear.com/9.x/fun-emoji/svg'
         ]
         ]);
     }
