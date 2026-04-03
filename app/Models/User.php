@@ -99,4 +99,32 @@ use HasFactory, Notifiable;
     {
     return $this->hasMany(Rom::class, 'uploaded_by');
     }
+
+    /**
+ * ONE USER CAN HAVE MANY ACHIEVEMENTS
+ */
+    public function achievements(): BelongsToMany
+    {
+        return $this->belongsToMany(Achievement::class, 'user_achievements')
+                    ->withPivot('unlocked_at')
+                    ->withTimestamps();
+    }
+
+/**
+ * ONE USER CAN HAVE MANY GAME SESSIONS
+ */
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
+
+    public function totalMinutesPlayed(): int
+    {
+        return $this->gameSessions()->sum('minutes_played');
+    }
+
+    public function gamesCompleted(): int
+    {
+        return $this->gameSessions()->where('completed', true)->count();
+    }
 }

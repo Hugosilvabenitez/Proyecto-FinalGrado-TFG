@@ -52,5 +52,12 @@ class Rom extends Model
     {
     return $this->hasMany(SaveState::class);
     }
+    /**
+ * ONE ROM CAN HAVE MANY GAME SESSIONS
+ */
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
 }
 
