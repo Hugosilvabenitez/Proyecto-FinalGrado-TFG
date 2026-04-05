@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             UserSettingSeeder::class,
             SaveStateSeeder::class,
             AuditLogSeeder::class,
+            AchievementSeeder::class,
+           
         ]);
     }
 }

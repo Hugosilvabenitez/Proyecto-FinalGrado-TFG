@@ -1,5 +1,5 @@
 import type { Auth } from '@/types/auth';
-
+import type { PageProps } from '@/types';  // ← añadir
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
     interface ImportMetaEnv {
@@ -22,6 +22,8 @@ declare module '@inertiajs/core' {
             [key: string]: unknown;
         };
     }
+    interface PageProps extends import('@/types').PageProps {}
+
 }
 
 declare module 'vue' {
