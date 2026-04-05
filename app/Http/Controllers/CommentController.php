@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Events\CommentCreated;
+use Illuminate\Http\RedirectResponse;
 
 /**
 * Class CommentController (Controller)
@@ -16,18 +18,25 @@ use App\Models\Comment;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * Store a newly created comment and broadcast it.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'content' => 'required',
-            'post_id' => 'required'
+        $validated = $request->validate([
+            'content' => ['required', 'string', 'max:1000'],
+            'post_id' => ['required', 'integer', 'exists:posts,id'],
         ]);
 
-        Comment::create([
+        $comment = Comment::create([
             'user_id' => auth()->id(),
-            'post_id' => $request->post_id,
-            'content' => $request->content
+            'post_id' => $validated['post_id'],
+            'content' => $validated['content'],
         ]);
+
+        $comment->load('user');
+
+        broadcast(new CommentCreated($comment))->toOthers();
 
         return back();
     }
