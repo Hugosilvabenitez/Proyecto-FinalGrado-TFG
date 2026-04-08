@@ -49,11 +49,9 @@ const submit = () => {
 };
 
 onMounted(() => {
-    if (!props.post?.id || !window.Echo) return;
-
     window.Echo.channel(`post.${props.post.id}`)
-        .listen('CommentCreated', (e) => {
-            comments.value.push(normalizeComment(e.comment));
+        .listen('.CommentCreated', (e) => {
+            comments.value.push(e.comment);
         });
 });
 

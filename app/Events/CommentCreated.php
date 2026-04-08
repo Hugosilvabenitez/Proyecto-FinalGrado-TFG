@@ -19,7 +19,7 @@ use Illuminate\Queue\SerializesModels;
 * This class contains all the necessary functions for the Comment's event.
 */
 
-class CommentCreated
+class CommentCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -41,5 +41,10 @@ class CommentCreated
     public function broadcastOn()
     {
         return new Channel('post.' . $this->comment->post_id);
+    }
+
+    public function broadcastAs()
+    {
+        return 'CommentCreated';
     }
 }

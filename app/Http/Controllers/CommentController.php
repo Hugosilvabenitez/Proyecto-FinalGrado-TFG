@@ -36,7 +36,7 @@ class CommentController extends Controller
 
         $comment->load('user');
 
-        broadcast(new CommentCreated($comment))->toOthers();
+        broadcast(new CommentCreated($comment));
 
         return back();
     }
