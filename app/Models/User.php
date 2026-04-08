@@ -101,8 +101,8 @@ use HasFactory, Notifiable;
     }
 
     /**
- * ONE USER CAN HAVE MANY ACHIEVEMENTS
- */
+     * ONE USER CAN HAVE MANY ACHIEVEMENTS
+     */
     public function achievements(): BelongsToMany
     {
         return $this->belongsToMany(Achievement::class, 'user_achievements')
@@ -110,9 +110,9 @@ use HasFactory, Notifiable;
                     ->withTimestamps();
     }
 
-/**
- * ONE USER CAN HAVE MANY GAME SESSIONS
- */
+    /**
+     * ONE USER CAN HAVE MANY GAME SESSIONS
+     */
     public function gameSessions(): HasMany
     {
         return $this->hasMany(GameSession::class);
@@ -126,5 +126,24 @@ use HasFactory, Notifiable;
     public function gamesCompleted(): int
     {
         return $this->gameSessions()->where('completed', true)->count();
+    }
+
+    public function stats(): HasOne
+    {
+        return $this->hasOne(UserStat::class);
+    }
+
+    /**
+     * CREATE USER'S STATS AT HIS REGISTRATION 
+     */
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->stats()->create([
+                'total_minutes' => 0,
+                'cloud_saves' => 0,
+                'achievements_unlocked' => 0
+            ]);
+        });
     }
 }
