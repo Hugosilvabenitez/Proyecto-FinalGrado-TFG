@@ -25,4 +25,12 @@ return [
         ],
 
     ],
+
+    'options' => [
+        'cluster' => env('PUSHER_APP_CLUSTER'),
+        'useTLS' => true,
+        'host' => env('PUSHER_HOST'),
+        'port' => env('PUSHER_PORT', 443),
+        'scheme' => env('PUSHER_SCHEME', 'https'),
+    ],
 ];

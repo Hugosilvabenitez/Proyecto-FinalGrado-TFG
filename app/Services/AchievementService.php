@@ -16,7 +16,7 @@ class AchievementService
             default           => 0,
         };
 
-        $alreadyUnlocked = $user->achievements()->pluck('achievement_id');
+        $alreadyUnlocked = $user->achievements()->select('achievement_id')->pluck('achievement_id')->all();
 
         Achievement::where('type', $type)
             ->where('threshold', '<=', $value)

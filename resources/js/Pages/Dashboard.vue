@@ -1,14 +1,15 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, reactive, onMounted, onUnmounted } from 'vue';
+import axios from 'axios';
 
 /**
 * Dashboard View
 * 
 * @author Miguel Gordon Jiménez <mgorjim1003@g.educaand.es>
 * @date 2026-03-18
-* 
+*
 * This file contains all the code for generate the dashboard area of Gameflux's project.
 */
 
@@ -18,13 +19,69 @@ const props = defineProps({
     }
 });
 
+
 const avatarUrl = computed(() => {
     if (props.auth?.user?.avatar_url) {
         return props.auth.user.avatar_url.replace('https://', 'http://');
     }
-    
+    return null;
 });
 
+
+const stats = reactive({
+    total_minutes: props.auth.user.stats?.total_minutes || 0,
+    cloud_saves: props.auth.user.stats?.cloud_saves || 0,
+    achievements_unlocked: props.auth.user.stats?.achievements_unlocked || 0,
+});
+
+
+const formattedTime = computed(() => {
+    const minutes = stats.total_minutes || 0;
+
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+
+    return `${h}h ${m}m`;
+});
+
+
+
+let interval = null;
+
+const addPlayTime = async () => {
+    try {
+        await axios.post('/stats/playtime', {
+            minutes: 1
+        });
+
+        stats.total_minutes += 1;
+
+    } catch (error) {
+        console.error('Error tracking playtime:', error);
+    }
+};
+
+const startTracking = () => {
+    if (interval) return;
+
+    interval = setInterval(addPlayTime, 60000);
+};
+
+const stopTracking = () => {
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
+};
+
+
+onMounted(() => {
+    startTracking();
+});
+
+onUnmounted(() => {
+    stopTracking();
+});
 </script>
 
 <template>
@@ -59,7 +116,7 @@ const avatarUrl = computed(() => {
                             </svg>
                         </div>
                         <p class="text-slate-400 text-xs uppercase tracking-wide mb-2">Partidas guardadas</p>
-                        <p class="text-3xl font-bold text-slate-100">12</p>
+                        <p class="text-3xl font-bold text-slate-100">{{ stats.cloud_saves }}</p>
                         <p class="text-xs text-slate-500 mt-1">En la nube</p>
                     </div>
                     <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_40px_rgba(15,23,42,0.9)] p-8 transition duration-500 ease-out hover:border-fuchsia-400/60 hover:shadow-[0_0_60px_rgba(244,114,182,0.8)] hover:-translate-y-1 text-center">
@@ -69,7 +126,7 @@ const avatarUrl = computed(() => {
                             </svg>
                         </div>
                         <p class="text-slate-400 text-xs uppercase tracking-wide mb-2">Horas jugadas</p>
-                        <p class="text-3xl font-bold text-slate-100">47h 23m</p>
+                        <p class="text-3xl font-bold text-slate-100">{{ formattedTime }}</p>
                         <p class="text-xs text-slate-500 mt-1">Total emulador</p>
                     </div>
                     <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_40px_rgba(15,23,42,0.9)] p-8 transition duration-500 ease-out hover:border-orange-400/60 hover:shadow-[0_0_60px_rgba(251,146,60,0.8)] hover:-translate-y-1 text-center">
@@ -79,8 +136,8 @@ const avatarUrl = computed(() => {
                             </svg>
                         </div>
                         <p class="text-slate-400 text-xs uppercase tracking-wide mb-2">Logros</p>
-                        <p class="text-3xl font-bold text-slate-100">24</p>
-                        <p class="text-xs text-slate-500 mt-1">De 156 totales</p>
+                        <p class="text-3xl font-bold text-slate-100">{{ stats.achievements_unlocked }}</p>
+                        <p class="text-xs text-slate-500 mt-1">De - totales</p>
                     </div>
                 </div>
 

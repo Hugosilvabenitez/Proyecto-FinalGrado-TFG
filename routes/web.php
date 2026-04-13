@@ -12,6 +12,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserStatsController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -50,4 +51,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/game-sessions',       [GameSessionController::class, 'store'])->name('game-sessions.store');
     Route::post('/game-sessions/score', [GameSessionController::class, 'reportScore'])->name('game-sessions.score');
     Route::get('/achievements',         [AchievementController::class, 'index'])->name('achievements.index');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/stats/playtime', [UserStatsController::class, 'addPlayTime']);
+    Route::post('/stats/save', [UserStatsController::class, 'addCloudSave']);
+    Route::post('/stats/achievement', [UserStatsController::class, 'addAchievement']);
 });
