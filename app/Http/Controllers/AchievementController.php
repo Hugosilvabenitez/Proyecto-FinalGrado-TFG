@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/AchievementController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
