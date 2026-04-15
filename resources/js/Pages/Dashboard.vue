@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { computed, reactive, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
+import { useNotifications } from '@/state/notificationsStore';
 
 /**
 * Dashboard View
@@ -48,16 +49,24 @@ const formattedTime = computed(() => {
 
 let interval = null;
 
+const { notifications, showAchievement } = useNotifications();
+
 const addPlayTime = async () => {
     try {
-        await axios.post('/stats/playtime', {
+        const response = await axios.post('/stats/playtime', {
             minutes: 1
         });
 
         stats.total_minutes += 1;
 
+        if (response.data.achievements?.length) {
+            stats.achievements_unlocked += response.data.achievements.length;
+
+            response.data.achievements.forEach(showAchievement);
+        }
+
     } catch (error) {
-        console.error('Error tracking playtime:', error);
+        console.error(error);
     }
 };
 
@@ -205,4 +214,15 @@ onUnmounted(() => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <div v-for="n in notifications" :key="n.id"
+        class="fixed bottom-6 right-6 bg-slate-900 border border-yellow-400/40 text-white px-4 py-3 rounded-xl shadow-lg animate-slide-in mb-3">
+
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">{{ n.icon }}</span>
+            <div>
+                <p class="text-xs text-yellow-400 uppercase">Logro desbloqueado</p>
+                <p class="font-semibold">{{ n.name }}</p>
+            </div>
+        </div>
+    </div>
 </template>

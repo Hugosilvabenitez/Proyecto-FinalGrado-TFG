@@ -22,9 +22,12 @@ class UserStatsController extends Controller
 
         $user->stats->increment('total_minutes', $request->minutes);
 
-        $service->check($user, 'time_played');
+        $unlocked = $service->check($user, 'time_played');
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'achievements' => $unlocked
+        ]);
     }
 
     public function addCloudSave()
@@ -53,7 +56,5 @@ class UserStatsController extends Controller
 
         return response()->json(['success' => true]);
     }
-
-    //CONTINUAR POR AQUÍ CON HUGO - FALTA NOTIFICACIÓN, EVENTO Y FRONTEND
 
 }
