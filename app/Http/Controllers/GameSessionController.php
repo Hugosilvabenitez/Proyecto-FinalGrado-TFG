@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/GameSessionController.php
 namespace App\Http\Controllers;
 
 use App\Models\GameSession;
