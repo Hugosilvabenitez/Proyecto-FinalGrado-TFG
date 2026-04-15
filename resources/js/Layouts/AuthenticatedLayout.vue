@@ -60,6 +60,11 @@ const userEmail = computed(() => page.props.auth?.user?.email || 'user@example.c
                         <NavLink :href="route('achievements.index')" :active="route().current('achievements.index')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
                             Logros
                         </NavLink>
+                        <NavLink
+                            v-if="$page.props.auth.user?.roles?.some(r => r.name.toLowerCase() === 'admin')"
+                            :href="route('users.index')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
+                            Usuarios
+                        </NavLink>
                     </div>
 
                     <div class="hidden md:flex items-center">
