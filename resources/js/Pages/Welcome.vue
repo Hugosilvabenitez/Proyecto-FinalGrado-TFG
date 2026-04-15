@@ -1,11 +1,69 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
 import AchievementToast from '@/Components/AchievementToast.vue'
+import { onMounted, ref } from 'vue'
+import * as echarts from 'echarts'
 
-defineProps<{
+const props = defineProps<{
     canLogin: boolean
     canRegister: boolean
+    topPlayers: any[]
+    topGames: any[]
 }>()
+
+const playersChart = ref(null)
+const gamesChart = ref(null)
+
+onMounted(() => {
+
+    if (props.topPlayers?.length) {
+        const playerNames = props.topPlayers.map(p => p.name)
+        const playerValues = props.topPlayers.map(p => p.total)
+
+        const chart1 = echarts.init(playersChart.value)
+        chart1.setOption({
+            title: { text: 'Top Jugadores 🏆', textStyle: { color: '#fff' } },
+            tooltip: {},
+            xAxis: {
+                type: 'value',
+                axisLabel: { color: '#94a3b8' }
+            },
+            yAxis: {
+                type: 'category',
+                data: playerNames,
+                axisLabel: { color: '#94a3b8' }
+            },
+            series: [{
+                data: playerValues,
+                type: 'bar'
+            }]
+        })
+    }
+
+    if (props.topGames?.length) {
+        const gameNames = props.topGames.map(g => g.title)
+        const gameValues = props.topGames.map(g => g.total)
+
+        const chart2 = echarts.init(gamesChart.value)
+        chart2.setOption({
+            title: { text: 'Top Juegos 🎮', textStyle: { color: '#fff' } },
+            tooltip: {},
+            xAxis: {
+                type: 'value',
+                axisLabel: { color: '#94a3b8' }
+            },
+            yAxis: {
+                type: 'category',
+                data: gameNames,
+                axisLabel: { color: '#94a3b8' }
+            },
+            series: [{
+                data: gameValues,
+                type: 'bar'
+            }]
+        })
+    }
+})
 </script>
 
 <template>
@@ -14,7 +72,6 @@ defineProps<{
 
     <div class="min-h-screen bg-slate-950 text-slate-100 relative overflow-x-hidden">
 
-        <!-- Fondo animado -->
         <div class="pointer-events-none fixed inset-0 z-0">
             <div class="absolute -top-32 -left-24 h-96 w-96 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 opacity-30 blur-3xl animate-pulse"/>
             <div class="absolute -bottom-40 -right-20 h-96 w-96 bg-gradient-to-tr from-fuchsia-500 via-orange-400 to-yellow-300 opacity-30 blur-3xl animate-pulse" style="animation-delay:1.5s"/>
@@ -78,10 +135,8 @@ defineProps<{
                 </Link>
             </div>
 
-            <!-- Hero visual: mockup de consola -->
             <div class="relative w-full max-w-2xl mx-auto">
                 <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(56,189,248,0.15)] p-6 sm:p-8">
-                    <!-- Barra superior mockup -->
                     <div class="flex items-center gap-2 mb-6">
                         <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
                         <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
@@ -90,7 +145,6 @@ defineProps<{
                             <span class="text-xs text-slate-500">gameflux.app/play</span>
                         </div>
                     </div>
-                    <!-- Pantalla emulador simulada -->
                     <div class="relative rounded-2xl bg-slate-900 border border-white/5 overflow-hidden" style="aspect-ratio:16/9;">
                         <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
                             <div class="text-center">
@@ -107,12 +161,10 @@ defineProps<{
                                 <p class="text-slate-600 text-xs mt-1">+100 títulos disponibles</p>
                             </div>
                         </div>
-                        <!-- Partículas decorativas -->
                         <div class="absolute top-4 left-4 w-2 h-2 rounded-full bg-cyan-400/40 animate-ping" style="animation-duration:2s"></div>
                         <div class="absolute top-8 right-8 w-1.5 h-1.5 rounded-full bg-fuchsia-400/40 animate-ping" style="animation-duration:3s"></div>
                         <div class="absolute bottom-6 left-12 w-1 h-1 rounded-full bg-blue-400/40 animate-ping" style="animation-duration:2.5s"></div>
                     </div>
-                    <!-- Controles mockup -->
                     <div class="flex items-center justify-between mt-4 px-2">
                         <div class="flex gap-2">
                             <div class="w-8 h-8 rounded-xl bg-slate-800 border border-white/5 flex items-center justify-center">
@@ -137,7 +189,6 @@ defineProps<{
                         </div>
                     </div>
                 </div>
-                <!-- Glow bajo el mockup -->
                 <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-cyan-500/20 blur-2xl rounded-full"></div>
             </div>
         </section>
@@ -157,6 +208,37 @@ defineProps<{
                     <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">+20</div>
                     <div class="text-xs text-slate-500 uppercase tracking-widest">Logros únicos</div>
                 </div>
+            </div>
+        </section>
+
+                <!-- RANKING -->
+        <section class="relative z-10 px-8 pb-24 max-w-6xl mx-auto">
+            <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-16"></div>
+
+            <div class="text-center mb-12">
+                <p class="text-xs text-slate-500 tracking-widest uppercase mb-3">Ranking global</p>
+                <h2 class="text-3xl font-semibold tracking-tight">
+                    Los mejores jugadores<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">
+                        y juegos más populares
+                    </span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Players -->
+                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6
+                            hover:border-cyan-400/40 transition duration-500">
+                    <div ref="playersChart" style="width:100%; height:350px;"></div>
+                </div>
+
+                <!-- Games -->
+                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6
+                            hover:border-fuchsia-400/40 transition duration-500">
+                    <div ref="gamesChart" style="width:100%; height:350px;"></div>
+                </div>
+
             </div>
         </section>
 
@@ -220,7 +302,6 @@ defineProps<{
             </div>
         </section>
 
-        <!-- CÓMO FUNCIONA -->
         <section class="relative z-10 px-8 pb-24 max-w-4xl mx-auto">
             <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-16"></div>
             <div class="text-center mb-12">
@@ -246,7 +327,6 @@ defineProps<{
             </div>
         </section>
 
-        <!-- CTA FINAL -->
         <section class="relative z-10 px-8 pb-28 max-w-4xl mx-auto">
             <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(56,189,248,0.1)] p-12 text-center relative overflow-hidden">
                 <div class="absolute -top-20 -left-20 h-64 w-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/10 blur-3xl pointer-events-none"></div>
