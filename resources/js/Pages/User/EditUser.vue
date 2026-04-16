@@ -44,21 +44,14 @@ const roleAccent = (roleName: string) => {
 
   return 'border-white/10 bg-white/5 text-slate-300';
 };
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
   <Head title="Editar usuario · GameFlux" />
-
-  <AuthenticatedLayout>
-    <template #header>
-      <div class="space-y-2">
-        <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Administración</p>
-        <h2 class="text-xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-500 bg-clip-text text-transparent tracking-tight">
-          Editar usuario
-        </h2>
-      </div>
-    </template>
-
     <div class="min-h-screen bg-slate-950 px-4 py-8 sm:px-6 lg:px-8 text-slate-100">
       <div class="mx-auto max-w-6xl space-y-8">
         <section class="rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.15),_transparent_35%),linear-gradient(180deg,rgba(15,23,42,.88),rgba(2,6,23,.96))] p-6 sm:p-8 shadow-[0_0_40px_rgba(15,23,42,0.8)] backdrop-blur-2xl">
@@ -220,5 +213,5 @@ const roleAccent = (roleName: string) => {
         </div>
       </div>
     </div>
-  </AuthenticatedLayout>
+  
 </template>

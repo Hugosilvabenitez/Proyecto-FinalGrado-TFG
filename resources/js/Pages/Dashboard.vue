@@ -33,10 +33,13 @@ const stats = useStats();
 stats.total_minutes = props.auth.user.stats?.total_minutes || 0;
 stats.cloud_saves = props.auth.user.stats?.cloud_saves || 0;
 stats.achievements_unlocked = props.auth.user.stats?.achievements_unlocked || 0;
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
-    <AuthenticatedLayout>
         <Head title="Dashboard · GameFlux" />
 
         <div class="min-h-screen bg-slate-950 text-slate-100 relative overflow-hidden">
@@ -155,5 +158,4 @@ stats.achievements_unlocked = props.auth.user.stats?.achievements_unlocked || 0;
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
 </template>

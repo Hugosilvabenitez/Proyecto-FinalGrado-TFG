@@ -56,21 +56,14 @@ const stateGlow = (unlocked: boolean) => {
 const iconFallback = (achievement: Achievement) => {
     return achievement.icon || '🏆';
 };
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
     <Head title="Logros · GameFlux" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="space-y-2">
-                <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Progression</p>
-                <h2 class="text-xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-500 bg-clip-text text-transparent tracking-tight">
-                    Logros
-                </h2>
-            </div>
-        </template>
-
         <div class="min-h-screen bg-slate-950 px-4 py-8 text-slate-100 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-7xl space-y-8">
                 <section class="grid gap-4 lg:grid-cols-[1.35fr_0.85fr_0.85fr]">
@@ -185,5 +178,5 @@ const iconFallback = (achievement: Achievement) => {
                 </section>
             </div>
         </div>
-    </AuthenticatedLayout>
+    
 </template>

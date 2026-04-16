@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { ref, computed, onMounted } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { usePlaytimeTracker } from '@/composables/usePlaytimeTracker';
-import AchievementNotifications from '@/Components/AchievementNotifications.vue';
+import { startPlaytimeTracker } from '@/services/playtimeTracker';
+import GlobalNotifications from '@/Components/GlobalNotifications.vue';
+import { initStats } from '@/state/statsStore';
 
 
 /**
@@ -22,16 +22,24 @@ import AchievementNotifications from '@/Components/AchievementNotifications.vue'
 const page = usePage();
 const showingNavigationDropdown = ref(false);
 
-const avatarUrl = computed(() => {
-    return page.props.auth.user.avatar_url;
-    
+onMounted(() => {
+    initStats(page.props.auth.user.stats);
+    startPlaytimeTracker();
 });
 
-const userName = computed(() => page.props.auth?.user?.name?.split(' ')[0] || 'Trainer');
-const userId = computed(() => page.props.auth?.user?.id || '???');
-const userEmail = computed(() => page.props.auth?.user?.email || 'user@example.com');
+const avatarUrl = computed(() => page.props.auth.user.avatar_url);
 
-usePlaytimeTracker();
+const userName = computed(() =>
+    page.props.auth?.user?.name?.split(' ')[0] || 'Trainer'
+);
+
+const userId = computed(() =>
+    page.props.auth?.user?.id || '???'
+);
+
+const userEmail = computed(() =>
+    page.props.auth?.user?.email || 'user@example.com'
+);
 </script>
 
 <template>
@@ -128,5 +136,5 @@ usePlaytimeTracker();
             <slot />
         </main>
     </div>
-    <AchievementNotifications />
+    <GlobalNotifications />
 </template>

@@ -61,12 +61,16 @@ const roleAccent = (roleName: string) => {
 
   return 'from-white/10 to-white/5 text-slate-300 border-white/10';
 };
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
   <Head title="Usuarios · GameFlux" />
 
-  <AuthenticatedLayout>
+  
     <div class="min-h-screen bg-slate-950 px-4 py-8 sm:px-6 lg:px-8 text-slate-100">
       <div class="mx-auto max-w-7xl space-y-8">
         <section class="grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
@@ -242,5 +246,5 @@ const roleAccent = (roleName: string) => {
         </section>
       </div>
     </div>
-  </AuthenticatedLayout>
+  
 </template>

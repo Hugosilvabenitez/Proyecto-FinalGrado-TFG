@@ -7,6 +7,9 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import { startPlaytimeTracker } from './services/playtimeTracker';
+
+startPlaytimeTracker();
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

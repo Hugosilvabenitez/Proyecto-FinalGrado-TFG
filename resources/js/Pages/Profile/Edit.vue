@@ -22,6 +22,10 @@ defineProps({
         type: String,
     },
 });
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>

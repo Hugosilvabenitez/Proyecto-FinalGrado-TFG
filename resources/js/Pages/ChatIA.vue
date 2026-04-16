@@ -57,11 +57,15 @@ function handleEnter(e: KeyboardEvent) {
     sendMessage()
   }
 }
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
   <Head title="Chat IA · GameFlux" />
-  <AuthenticatedLayout>
+  
     <div class="min-h-screen bg-slate-950 text-slate-100 relative overflow-hidden flex flex-col">
 
       <!-- Blobs de fondo -->
@@ -159,5 +163,5 @@ function handleEnter(e: KeyboardEvent) {
       </div>
 
     </div>
-  </AuthenticatedLayout>
+  
 </template>

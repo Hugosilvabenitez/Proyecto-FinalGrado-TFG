@@ -43,13 +43,16 @@ const avatarFromUser = (user) => {
 };
 
 const firstName = (name) => name?.split(' ')[0] || 'Trainer';
+
+defineOptions({
+    layout: AuthenticatedLayout
+});
 </script>
 
 <template>
     <Head title="Blog · GameFlux" />
 
-    <AuthenticatedLayout>
-        <template #header>
+        <template>
             <div class="space-y-2">
                 <h2 class="text-xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-500 bg-clip-text text-transparent tracking-tight">
                     Blog GameFlux
@@ -227,5 +230,4 @@ const firstName = (name) => name?.split(' ')[0] || 'Trainer';
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
 </template>
