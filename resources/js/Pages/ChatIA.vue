@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 
@@ -60,6 +60,7 @@ function handleEnter(e: KeyboardEvent) {
 </script>
 
 <template>
+  <Head title="Chat IA · GameFlux" />
   <AuthenticatedLayout>
     <div class="min-h-screen bg-slate-950 text-slate-100 relative overflow-hidden flex flex-col">
 

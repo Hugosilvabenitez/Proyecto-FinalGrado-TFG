@@ -2,8 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { computed, reactive, onMounted, onUnmounted } from 'vue';
-import axios from 'axios';
-import { useNotifications } from '@/state/notificationsStore';
+import { useStats } from '@/state/statsStore';
 
 /**
 * Dashboard View
@@ -20,22 +19,6 @@ const props = defineProps({
     }
 });
 
-
-const avatarUrl = computed(() => {
-    if (props.auth?.user?.avatar_url) {
-        return props.auth.user.avatar_url.replace('https://', 'http://');
-    }
-    return null;
-});
-
-
-const stats = reactive({
-    total_minutes: props.auth.user.stats?.total_minutes || 0,
-    cloud_saves: props.auth.user.stats?.cloud_saves || 0,
-    achievements_unlocked: props.auth.user.stats?.achievements_unlocked || 0,
-});
-
-
 const formattedTime = computed(() => {
     const minutes = stats.total_minutes || 0;
 
@@ -45,52 +28,11 @@ const formattedTime = computed(() => {
     return `${h}h ${m}m`;
 });
 
+const stats = useStats();
 
-
-let interval = null;
-
-const { notifications, showAchievement } = useNotifications();
-
-const addPlayTime = async () => {
-    try {
-        const response = await axios.post('/stats/playtime', {
-            minutes: 1
-        });
-
-        stats.total_minutes += 1;
-
-        if (response.data.achievements?.length) {
-            stats.achievements_unlocked += response.data.achievements.length;
-
-            response.data.achievements.forEach(showAchievement);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const startTracking = () => {
-    if (interval) return;
-
-    interval = setInterval(addPlayTime, 60000);
-};
-
-const stopTracking = () => {
-    if (interval) {
-        clearInterval(interval);
-        interval = null;
-    }
-};
-
-
-onMounted(() => {
-    startTracking();
-});
-
-onUnmounted(() => {
-    stopTracking();
-});
+stats.total_minutes = props.auth.user.stats?.total_minutes || 0;
+stats.cloud_saves = props.auth.user.stats?.cloud_saves || 0;
+stats.achievements_unlocked = props.auth.user.stats?.achievements_unlocked || 0;
 </script>
 
 <template>
@@ -107,7 +49,7 @@ onUnmounted(() => {
             <div class="relative z-10 px-4 py-8 max-w-6xl mx-auto">
                 <div class="w-full max-w-2xl mx-auto mb-12">
                     <div class="flex flex-col items-center mb-8">
-                        <img :src="avatarUrl" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-white/20 shadow-[0_0_25px_rgba(59,130,246,0.75)] mb-4"/>
+                        <img :src="props.auth?.user?.avatar_url" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-white/20 shadow-[0_0_25px_rgba(59,130,246,0.75)] mb-4"/>
                         <h1 class="text-2xl font-semibold tracking-tight text-center mb-2">¡Hola, {{ props.auth.user.name.split(' ')[0] }}!</h1>
                         <p class="text-sm text-slate-300 text-center">Tu portal de emulación Game Boy Advance</p>
                     </div>
@@ -214,15 +156,4 @@ onUnmounted(() => {
             </div>
         </div>
     </AuthenticatedLayout>
-    <div v-for="n in notifications" :key="n.id"
-        class="fixed bottom-6 right-6 bg-slate-900 border border-yellow-400/40 text-white px-4 py-3 rounded-xl shadow-lg animate-slide-in mb-3">
-
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">{{ n.icon }}</span>
-            <div>
-                <p class="text-xs text-yellow-400 uppercase">Logro desbloqueado</p>
-                <p class="font-semibold">{{ n.name }}</p>
-            </div>
-        </div>
-    </div>
 </template>

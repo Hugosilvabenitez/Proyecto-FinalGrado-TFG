@@ -1,12 +1,11 @@
 <?php
-// app/Http/Controllers/AchievementController.php
 namespace App\Http\Controllers;
+use Inertia\Inertia;
 
-use Illuminate\Http\JsonResponse;
 
 class AchievementController extends Controller
 {
-    public function index(): JsonResponse
+    public function index()
     {
         $user = auth()->user();
 
@@ -16,11 +15,21 @@ class AchievementController extends Controller
             ->keyBy('id');
 
         $all = \App\Models\Achievement::all()->map(function ($achievement) use ($unlocked) {
-            $achievement->unlocked    = $unlocked->has($achievement->id);
-            $achievement->unlocked_at = $unlocked->get($achievement->id)?->pivot->unlocked_at;
-            return $achievement;
-        });
+            $pivot = $unlocked->get($achievement->id)?->pivot;
 
-        return response()->json($all);
+            return [
+                'id' => $achievement->id,
+                'name' => $achievement->name,
+                'description' => $achievement->description,
+                'icon' => $achievement->icon ?? null,
+                'points' => $achievement->points ?? null,
+                'unlocked' => $unlocked->has($achievement->id),
+                'unlocked_at' => $pivot?->unlocked_at,
+            ];
+        })->values();
+
+        return Inertia::render('Achievements', [
+            'achievements' => $all
+        ]);
     }
 }

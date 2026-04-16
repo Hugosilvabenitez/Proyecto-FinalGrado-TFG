@@ -6,6 +6,9 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { usePlaytimeTracker } from '@/composables/usePlaytimeTracker';
+import AchievementNotifications from '@/Components/AchievementNotifications.vue';
+
 
 /**
 * Auth Layout Tpl
@@ -20,16 +23,15 @@ const page = usePage();
 const showingNavigationDropdown = ref(false);
 
 const avatarUrl = computed(() => {
-    const user = page.props.auth?.user;
+    return page.props.auth.user.avatar_url;
     
-    if (user.avatar_url) {
-        return user.avatar_url.replace('https://', 'http://');
-    }
 });
 
 const userName = computed(() => page.props.auth?.user?.name?.split(' ')[0] || 'Trainer');
 const userId = computed(() => page.props.auth?.user?.id || '???');
 const userEmail = computed(() => page.props.auth?.user?.email || 'user@example.com');
+
+usePlaytimeTracker();
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const userEmail = computed(() => page.props.auth?.user?.email || 'user@example.c
                         </NavLink>
                         <NavLink
                             v-if="$page.props.auth.user?.roles?.some(r => r.name.toLowerCase() === 'admin')"
-                            :href="route('users.index')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
+                            :href="route('users.index')" :active="route().current('users.index')"  class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
                             Usuarios
                         </NavLink>
                     </div>
@@ -126,4 +128,5 @@ const userEmail = computed(() => page.props.auth?.user?.email || 'user@example.c
             <slot />
         </main>
     </div>
+    <AchievementNotifications />
 </template>
