@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Notifications\Auth\ResetPasswordNotification;
 
 /**
  * Class User (Model)
@@ -154,6 +155,11 @@ class User extends Authenticatable
     public function isModerator(): bool
     {
         return $this->hasRole('Moderator');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
 }
