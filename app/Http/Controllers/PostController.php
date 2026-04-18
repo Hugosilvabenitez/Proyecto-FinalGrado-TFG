@@ -21,7 +21,10 @@ class PostController extends Controller
         $posts = Post::with(['user', 'comments.user'])->get();
 
         return inertia('Blog/Index', [
-            'posts' => $posts
+            'posts' => $posts,
+            'auth' => [
+                'user' => auth()->user()
+            ]
         ]);
     }
 
@@ -39,5 +42,18 @@ class PostController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function destroy(Post $post)
+    {
+        $user = auth()->user();
+
+        if (!($user->hasRole('Admin') || $user->hasRole('Moderator'))) {
+            abort(403, 'No autorizado');
+        }
+
+        $post->delete();
+
+        return back();
     }
 }

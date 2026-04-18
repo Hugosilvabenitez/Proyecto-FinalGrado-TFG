@@ -84,6 +84,9 @@ Route::middleware(['auth', 'verified', 'permission:roms.edit'])->group(function 
     Route::get('/stats', fn() => Inertia::render('Stats'))->name('stats.index');
 });
 
+Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+
 // ── Usuarios autenticados ────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard

@@ -1,21 +1,14 @@
-<!--
-Comments Component (View)
-
-@author Miguel Gordon Jiménez <mgorjim1003@g.educaand.es>
-@date 2026-04-05
-
-This file contains all the necessary lines for the Comment's Component.
--->
-
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     post: {
         type: Object,
         required: true,
     },
+    auth: Object,
 });
 
 const comments = ref(props.post.comments ? [...props.post.comments] : []);
@@ -32,10 +25,22 @@ const avatarFromUser = (user) => {
 
 const firstName = (name) => name?.split(' ')[0] || 'Trainer';
 
-const normalizeComment = (comment) => ({
-    ...comment,
-    user: comment.user || null,
-});
+const canDeleteComment = () => {
+    return props.auth?.user?.roles?.some(r =>
+        ['admin', 'moderator'].includes(r.name.toLowerCase())
+    );
+};
+
+const deleteComment = (id) => {
+    if (!confirm('¿Eliminar este comentario?')) return;
+
+    router.delete(`/comments/${id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            comments.value = comments.value.filter(c => c.id !== id);
+        },
+    });
+};
 
 const submit = () => {
     if (!form.content.trim()) return;
@@ -65,12 +70,12 @@ const orderedComments = computed(() => comments.value);
 
 <template>
     <div class="mt-4 space-y-4">
+
         <div class="space-y-2 max-h-56 overflow-y-auto pr-1">
             <div
                 v-for="comment in orderedComments"
                 :key="comment.id"
-                class="rounded-2xl border border-white/10 bg-slate-950/60 p-3"
-            >
+                class="rounded-2xl border border-white/10 bg-slate-950/60 p-3">
                 <div class="flex items-start gap-3">
                     <img
                         :src="avatarFromUser(comment.user)"
@@ -83,6 +88,11 @@ const orderedComments = computed(() => comments.value);
                             <p class="text-sm font-semibold text-cyan-300 truncate">
                                 {{ firstName(comment.user?.name) }}
                             </p>
+
+                            <button v-if="canDeleteComment()" @click="deleteComment(comment.id)" class="text-xs font-semibold text-red-300 hover:text-red-200 transition px-2 py-1 rounded-lg border border-red-500/20 hover:bg-red-500/10 hover:border-red-400/40 hover:shadow-[0_0_15px_rgba(239,68,68,0.25)] mt-1">
+                                Eliminar
+                            </button>
+
                         </div>
 
                         <p class="mt-1 text-sm text-slate-200 leading-6">

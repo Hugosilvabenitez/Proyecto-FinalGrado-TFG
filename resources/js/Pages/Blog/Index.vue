@@ -11,12 +11,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import PostComments from '@/Components/PostComments.vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     posts: {
         type: Array,
         default: () => [],
     },
+    auth: Object,
 });
 
 const form = useForm({
@@ -43,6 +45,20 @@ const avatarFromUser = (user) => {
 };
 
 const firstName = (name) => name?.split(' ')[0] || 'Trainer';
+
+const canDelete = () => {
+    return props.auth?.user?.roles?.some(r =>
+        ['admin', 'moderator'].includes(r.name.toLowerCase())
+    );
+};
+
+const deletePost = (id) => {
+    if (!confirm('¿Eliminar este post?')) return;
+
+    router.delete(`/posts/${id}`, {
+        preserveScroll: true,
+    });
+};
 
 defineOptions({
     layout: AuthenticatedLayout
@@ -203,8 +219,9 @@ defineOptions({
                                             <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
                                                 #{{ post.id }}
                                             </span>
+                                            
                                         </div>
-
+                                        <button v-if="canDelete()" @click="deletePost(post.id)" class="text-xs font-semibold text-red-300 hover:text-red-200 transition px-2 py-1 rounded-lg border border-red-500/20 hover:bg-red-500/10 hover:border-red-400/40 hover:shadow-[0_0_15px_rgba(239,68,68,0.25)] mt-1">Eliminar</button>
                                         <p class="mt-4 whitespace-pre-line text-sm leading-6 text-slate-300">
                                             {{ post.content }}
                                         </p>
@@ -212,7 +229,7 @@ defineOptions({
                                 </div>
 
                                 <div class="mt-5 border-t border-white/10 pt-5">
-                                    <PostComments :post="post" />
+                                    <PostComments :post="post" :auth="auth"/>
                                 </div>
                             </article>
                         </div>
