@@ -75,7 +75,7 @@ function handleEnter(e: KeyboardEvent) {
         style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%221%22 height=%221%22 fill=%22%23ffffff%22 opacity=%220.12%22/></svg>');"
       />
 
-      <!-- Header -->
+      <!-- Header
       <div class="relative z-10 bg-white/5 backdrop-blur-2xl border-b border-white/10 px-6 py-4 flex items-center gap-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-full flex items-center justify-center text-lg shadow-[0_0_20px_rgba(56,189,248,0.7)]">
@@ -89,7 +89,7 @@ function handleEnter(e: KeyboardEvent) {
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Mensajes -->
       <div class="relative z-10 flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-3xl mx-auto w-full">
@@ -134,8 +134,8 @@ function handleEnter(e: KeyboardEvent) {
       </div>
 
       <!-- Input -->
-      <div class="relative z-10 bg-white/5 backdrop-blur-2xl border-t border-white/10 px-4 py-4">
-        <div class="max-w-3xl mx-auto flex gap-3 items-end">
+      <div class="relative z-10 bg-white/5 backdrop-blur-2xl border-t border-white/10 px-4 py-8">
+        <div class="max-w-3xl mx-auto flex gap-4 items-end px-4 py-8 bg-white/5 border border-white/10 rounded-2xl shadow-[0_0_20px_rgba(15,23,42,0.6)]">
           <textarea
             v-model="userInput"
             @keydown.enter="handleEnter"
@@ -154,7 +154,6 @@ function handleEnter(e: KeyboardEvent) {
             </svg>
           </button>
         </div>
-        <p class="text-center text-xs text-slate-600 mt-2">Enter para enviar · Shift+Enter para nueva línea</p>
       </div>
 
     </div>

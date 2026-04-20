@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
-import AchievementToast from '@/Components/AchievementToast.vue'
-import { onMounted, ref } from 'vue'
-import * as echarts from 'echarts'
 
 const props = defineProps<{
     canLogin: boolean
@@ -11,59 +8,14 @@ const props = defineProps<{
     topGames: any[]
 }>()
 
-const playersChart = ref(null)
-const gamesChart = ref(null)
+// función para calcular porcentaje (evita que se rompan las barras)
+const getMax = (arr: any[]) => {
+    if (!arr?.length) return 1
+    return Math.max(...arr.map(i => i.total))
+}
 
-onMounted(() => {
-
-    if (props.topPlayers?.length) {
-        const playerNames = props.topPlayers.map(p => p.name)
-        const playerValues = props.topPlayers.map(p => p.total)
-
-        const chart1 = echarts.init(playersChart.value)
-        chart1.setOption({
-            title: { text: 'Top Jugadores 🏆', textStyle: { color: '#fff' } },
-            tooltip: {},
-            xAxis: {
-                type: 'value',
-                axisLabel: { color: '#94a3b8' }
-            },
-            yAxis: {
-                type: 'category',
-                data: playerNames,
-                axisLabel: { color: '#94a3b8' }
-            },
-            series: [{
-                data: playerValues,
-                type: 'bar'
-            }]
-        })
-    }
-
-    if (props.topGames?.length) {
-        const gameNames = props.topGames.map(g => g.title)
-        const gameValues = props.topGames.map(g => g.total)
-
-        const chart2 = echarts.init(gamesChart.value)
-        chart2.setOption({
-            title: { text: 'Top Juegos 🎮', textStyle: { color: '#fff' } },
-            tooltip: {},
-            xAxis: {
-                type: 'value',
-                axisLabel: { color: '#94a3b8' }
-            },
-            yAxis: {
-                type: 'category',
-                data: gameNames,
-                axisLabel: { color: '#94a3b8' }
-            },
-            series: [{
-                data: gameValues,
-                type: 'bar'
-            }]
-        })
-    }
-})
+const maxPlayers = getMax(props.topPlayers)
+const maxGames = getMax(props.topGames)
 </script>
 
 <template>
@@ -227,16 +179,62 @@ onMounted(() => {
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                <!-- Players -->
-                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6
-                            hover:border-cyan-400/40 transition duration-500">
-                    <div ref="playersChart" style="width:100%; height:350px;"></div>
+                <!-- PLAYERS -->
+                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6">
+                    <h3 class="text-lg mb-6 text-white">Top Jugadores 🏆</h3>
+
+                    <div v-if="topPlayers?.length">
+                        <div v-for="(p, index) in topPlayers" :key="index" class="mb-5">
+
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">
+                                    {{ index + 1 }}. {{ p.name }}
+                                </span>
+                                <span class="text-cyan-400 font-semibold">
+                                    {{ p.total }}
+                                </span>
+                            </div>
+
+                            <div class="w-full bg-slate-800 rounded-full h-3">
+                                <div
+                                    class="bg-cyan-400 h-3 rounded-full transition-all duration-700"
+                                    :style="{ width: ((p.total / maxPlayers) * 100) + '%' }"
+                                ></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <p v-else class="text-slate-500">Sin datos</p>
                 </div>
 
-                <!-- Games -->
-                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6
-                            hover:border-fuchsia-400/40 transition duration-500">
-                    <div ref="gamesChart" style="width:100%; height:350px;"></div>
+                <!-- GAMES -->
+                <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6">
+                    <h3 class="text-lg mb-6 text-white">Top Juegos 🎮</h3>
+
+                    <div v-if="topGames?.length">
+                        <div v-for="(g, index) in topGames" :key="index" class="mb-5">
+
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">
+                                    {{ index + 1 }}. {{ g.title }}
+                                </span>
+                                <span class="text-fuchsia-400 font-semibold">
+                                    {{ g.total }}
+                                </span>
+                            </div>
+
+                            <div class="w-full bg-slate-800 rounded-full h-3">
+                                <div
+                                    class="bg-fuchsia-400 h-3 rounded-full transition-all duration-700"
+                                    :style="{ width: ((g.total / maxGames) * 100) + '%' }"
+                                ></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <p v-else class="text-slate-500">Sin datos</p>
                 </div>
 
             </div>
