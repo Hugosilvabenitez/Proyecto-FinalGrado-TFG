@@ -66,8 +66,8 @@ Route::middleware(['auth', 'verified', 'permission:admin.access'])->group(functi
     Route::post('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
 });
 
-Route::inertia('/chat-ia', 'ChatIA')->name('chat-ia');
-Route::post('/chat-ia', [ChatIAController::class, 'chat'])->name('chat-ia.send');
+
+
 Route::middleware('auth')->group(function () {
     Route::post('/game-sessions',       [GameSessionController::class, 'store'])->name('game-sessions.store');
     Route::post('/game-sessions/score', [GameSessionController::class, 'reportScore'])->name('game-sessions.score');
@@ -79,10 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/stats/save', [UserStatsController::class, 'addCloudSave']);
     Route::post('/stats/achievement', [UserStatsController::class, 'addAchievement']);
 });
-// ── Admin y Moderator (roms.edit) ────────────────────────────────────
-Route::middleware(['auth', 'verified', 'permission:roms.edit'])->group(function () {
-    Route::get('/stats', fn() => Inertia::render('Stats'))->name('stats.index');
-});
+
 
 Route::delete('/posts/{post}', [PostController::class, 'destroy']);
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);

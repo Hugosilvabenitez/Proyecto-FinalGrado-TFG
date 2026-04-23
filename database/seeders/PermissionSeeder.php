@@ -13,12 +13,10 @@ class PermissionSeeder extends Seeder
         $permissions = [
             ['name' => 'Ver panel admin',      'slug' => 'admin.access',         'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Gestionar usuarios',   'slug' => 'users.manage',         'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'Banear usuarios',      'slug' => 'users.ban',            'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Gestionar ROMs',       'slug' => 'roms.manage',          'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Editar ROMs',          'slug' => 'roms.edit',            'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Gestionar logros',     'slug' => 'achievements.manage',  'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Ver estadísticas',     'slug' => 'stats.view',           'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'Ver reportes',         'slug' => 'reports.view',         'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Jugar ROMs públicas',  'slug' => 'roms.play',            'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Usar chat IA',         'slug' => 'chat.use',             'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Ver perfil y logros',  'slug' => 'profile.view',         'created_at' => $now, 'updated_at' => $now],
@@ -37,7 +35,7 @@ class PermissionSeeder extends Seeder
         ])->toArray();
 
         // Moderator
-        $modPerms = collect(['roms.edit', 'stats.view', 'reports.view', 'roms.play', 'chat.use', 'profile.view'])
+        $modPerms = collect(['roms.edit', 'stats.view', 'roms.play', 'chat.use', 'profile.view'])
             ->map(fn($slug) => ['permission_id' => $p[$slug], 'role_id' => $r['Moderator']])
             ->toArray();
 
