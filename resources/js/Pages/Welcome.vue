@@ -34,21 +34,13 @@ const maxGames = getMax(props.topGames)
         <!-- Navbar -->
         <nav class="relative z-10 flex items-center justify-between px-8 py-4 border-b border-white/10 backdrop-blur-2xl bg-slate-950/60 sticky top-0">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.5)]">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <rect x="2" y="7" width="16" height="9" rx="2.5" stroke="#fff" stroke-width="1.2"/>
-                        <path d="M6 11.5H8M7 10.5V12.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
-                        <circle cx="12" cy="11.5" r="0.8" fill="#fff"/>
-                        <circle cx="14" cy="11.5" r="0.8" fill="#fff"/>
-                        <path d="M7 7V5.5C7 4.67 7.67 4 8.5 4H11.5C12.33 4 13 4.67 13 5.5V7" stroke="#fff" stroke-width="1.2"/>
-                    </svg>
-                </div>
+                <img src="/images/logo.jpg" alt="GameFlux" class="h-10 w-10 drop-shadow-[0_0_15px_rgba(59,130,246,0.75)] group-hover:scale-110 transition-transform"/>
                 <span class="text-lg font-semibold tracking-tight">Game<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-400">Flux</span></span>
             </div>
             <div class="hidden sm:flex items-center gap-1">
                 <Link :href="route('chat-ia')" class="text-sm text-slate-400 hover:text-slate-100 px-4 py-2 rounded-xl hover:bg-white/5 transition-all duration-200 no-underline">Chat IA</Link>
                 <template v-if="canLogin">
-                    <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-slate-400 hover:text-slate-100 px-4 py-2 rounded-xl hover:bg-white/5 transition-all duration-200 no-underline">Mi perfil</Link>
+                    <Link v-if="$page.props.auth.user" :href="route('profile.edit')" class="text-sm text-slate-400 hover:text-slate-100 px-4 py-2 rounded-xl hover:bg-white/5 transition-all duration-200 no-underline">Mi perfil</Link>
                     <template v-else>
                         <Link :href="route('login')" class="text-sm text-slate-400 hover:text-slate-100 px-4 py-2 rounded-xl hover:bg-white/5 transition-all duration-200 no-underline">Iniciar sesión</Link>
                         <Link v-if="canRegister" :href="route('register')" class="text-sm text-white font-semibold px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 shadow-[0_0_20px_rgba(56,189,248,0.5)] hover:shadow-[0_0_30px_rgba(244,114,182,0.7)] hover:scale-[1.02] transition-all duration-200 no-underline">
@@ -149,7 +141,7 @@ const maxGames = getMax(props.topGames)
         <section class="relative z-10 px-8 pb-24 max-w-4xl mx-auto">
             <div class="grid grid-cols-3 gap-4">
                 <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6 text-center transition duration-500 hover:border-cyan-400/40 hover:shadow-[0_0_40px_rgba(56,189,248,0.3)] hover:-translate-y-1">
-                    <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">+100</div>
+                    <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">+15</div>
                     <div class="text-xs text-slate-500 uppercase tracking-widest">Juegos disponibles</div>
                 </div>
                 <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6 text-center transition duration-500 hover:border-fuchsia-400/40 hover:shadow-[0_0_40px_rgba(244,114,182,0.3)] hover:-translate-y-1">
@@ -157,7 +149,7 @@ const maxGames = getMax(props.topGames)
                     <div class="text-xs text-slate-500 uppercase tracking-widest">Recomendaciones</div>
                 </div>
                 <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-6 text-center transition duration-500 hover:border-orange-400/40 hover:shadow-[0_0_40px_rgba(251,146,60,0.3)] hover:-translate-y-1">
-                    <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">+20</div>
+                    <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">+6</div>
                     <div class="text-xs text-slate-500 uppercase tracking-widest">Logros únicos</div>
                 </div>
             </div>
@@ -371,12 +363,12 @@ const maxGames = getMax(props.topGames)
                     <div class="text-sm font-semibold text-slate-200">Chat IA</div>
                     <div class="text-xs text-slate-500">Recomendaciones</div>
                 </Link>
-                <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="group rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-5 no-underline transition duration-500 hover:border-blue-400/60 hover:shadow-[0_0_30px_rgba(96,165,250,0.3)] hover:-translate-y-0.5 flex flex-col gap-3">
+                <Link v-if="$page.props.auth.user" :href="route('profile.edit')" class="group rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-5 no-underline transition duration-500 hover:border-blue-400/60 hover:shadow-[0_0_30px_rgba(96,165,250,0.3)] hover:-translate-y-0.5 flex flex-col gap-3">
                     <div class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-400 to-violet-500 group-hover:shadow-[0_0_10px_rgba(96,165,250,0.9)] transition-shadow"></div>
                     <div class="text-sm font-semibold text-slate-200">Mi perfil</div>
                     <div class="text-xs text-slate-500">Estadísticas</div>
                 </Link>
-                <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="group rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-5 no-underline transition duration-500 hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 flex flex-col gap-3">
+                <Link v-if="$page.props.auth.user" :href="route('achievements.index')" class="group rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl p-5 no-underline transition duration-500 hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 flex flex-col gap-3">
                     <div class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 group-hover:shadow-[0_0_10px_rgba(16,185,129,0.9)] transition-shadow"></div>
                     <div class="text-sm font-semibold text-slate-200">Mis logros</div>
                     <div class="text-xs text-slate-500">Ver progreso</div>
