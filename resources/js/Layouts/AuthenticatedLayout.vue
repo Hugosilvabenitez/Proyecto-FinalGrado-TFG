@@ -58,8 +58,14 @@ const userEmail = computed(() =>
                     </div>
 
                     <div class="hidden md:flex items-center space-x-2">
+                        <NavLink :href="route('welcome')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
+                            Página Inicial
+                        </NavLink>
                         <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
                             Dashboard
+                        </NavLink>
+                        <NavLink :href="route('play')" :active="route().current('play')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
+                            Play
                         </NavLink>
                         <NavLink :href="route('blog')" :active="route().current('blog')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-cyan-300 transition-all">
                             Blog

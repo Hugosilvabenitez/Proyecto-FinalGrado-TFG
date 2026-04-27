@@ -43,7 +43,7 @@ Route::get('/', function () {
         'topPlayers' => $topPlayers,
         'topGames'   => $topGames,
     ]);
-});
+})->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -105,4 +105,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/game-sessions',        [GameSessionController::class, 'store'])->name('game-sessions.store');
     Route::post('/game-sessions/score',  [GameSessionController::class, 'reportScore'])->name('game-sessions.score');
     Route::get('/achievements',          [AchievementController::class, 'index'])->name('achievements.index');
+    Route::get('/play', function () {
+        return inertia('Play');
+    })->name('play');
+
 });
