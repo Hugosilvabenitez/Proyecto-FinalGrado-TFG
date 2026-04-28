@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PlayController;
 use App\Http\Controllers\UserStatsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -105,8 +106,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/game-sessions',        [GameSessionController::class, 'store'])->name('game-sessions.store');
     Route::post('/game-sessions/score',  [GameSessionController::class, 'reportScore'])->name('game-sessions.score');
     Route::get('/achievements',          [AchievementController::class, 'index'])->name('achievements.index');
-    Route::get('/play', function () {
-        return inertia('Play');
-    })->name('play');
+    Route::get('/play', [PlayController::class, 'index'])->name('play');
+    Route::get('/emulator/{rom:slug}', [PlayController::class, 'emulator'])->name('emulator.launch');
+    Route::get('/roms/{rom:slug}/file', [PlayController::class, 'stream'])->name('roms.stream');
 
 });
