@@ -44,13 +44,13 @@ defineOptions({
 <template>
     <Head title="Play · GameFlux" />
 
-    <div class="h-screen overflow-hidden bg-slate-950 text-slate-100">
+    <div class="gf-page h-screen overflow-hidden">
         <div class="mx-auto flex h-full max-w-[1640px] flex-col px-4 py-5 sm:px-6 lg:px-8">
-            <div class="mb-4 flex flex-col gap-3 border-b border-white/10 pb-4 xl:flex-row xl:items-center xl:justify-between">
+            <div class="mb-4 flex flex-col gap-3 border-b pb-4 xl:flex-row xl:items-center xl:justify-between" :style="{ borderColor: 'var(--gf-line)' }">
                 <div class="flex min-w-0 items-center gap-3">
                     <div class="min-w-0">
-                        <p class="text-xs uppercase tracking-[0.28em] text-cyan-300/80">GameFlux Play</p>
-                        <h1 class="truncate text-xl font-semibold tracking-tight text-white sm:text-2xl">
+                        <p class="gf-text-accent text-xs uppercase tracking-[0.28em]">GameFlux Play</p>
+                        <h1 class="truncate text-xl font-semibold tracking-tight sm:text-2xl">
                             {{ selectedRom?.title || 'Selecciona un juego' }}
                         </h1>
                     </div>
@@ -59,20 +59,20 @@ defineOptions({
                 <div class="flex flex-wrap items-center gap-2 text-xs">
                     <button
                         type="button"
-                        class="inline-flex h-9 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 px-3 font-semibold text-cyan-100 transition hover:border-cyan-300/40 hover:bg-cyan-300/15"
+                        class="gf-chip gf-chip-accent inline-flex h-9 items-center justify-center rounded-lg px-3 font-semibold transition"
                         :aria-expanded="isCatalogOpen"
                         aria-controls="play-catalog"
                         @click="isCatalogOpen = !isCatalogOpen"
                     >
                         {{ isCatalogOpen ? 'Ocultar catálogo' : 'Mostrar catálogo' }}
                     </button>
-                    <span class="rounded-lg border border-emerald-400/20 bg-emerald-500/10 px-3 py-2 text-emerald-200">
+                    <span class="gf-chip gf-chip-success rounded-lg px-3 py-2">
                         {{ installedCount }} instalados
                     </span>
-                    <span class="rounded-lg border border-amber-400/20 bg-amber-500/10 px-3 py-2 text-amber-200">
+                    <span class="gf-chip gf-chip-warning rounded-lg px-3 py-2">
                         {{ missingCount }} pendientes
                     </span>
-                    <span v-if="selectedRom" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-slate-300">
+                    <span v-if="selectedRom" class="gf-chip rounded-lg px-3 py-2">
                         {{ selectedRom.region || 'Región no indicada' }}
                     </span>
                 </div>
@@ -86,21 +86,21 @@ defineOptions({
                 En cuanto copies ahi los archivos reales de `gbajs2`, la seleccion quedara conectada.
             </div>
 
-            <div v-if="!roms.length" class="rounded-lg border border-white/10 bg-slate-900/70 p-8 text-center text-slate-300">
+            <div v-if="!roms.length" class="gf-panel rounded-lg p-8 text-center gf-text-muted">
                 No hay juegos publicos en la tabla `roms`.
             </div>
 
             <div v-else class="relative flex min-h-0 flex-1 gap-4 overflow-hidden">
                 <aside
                     id="play-catalog"
-                    class="fixed inset-y-0 left-0 z-40 h-full w-[86vw] max-w-sm border-r border-white/10 bg-slate-950/98 p-4 pt-20 shadow-2xl transition-[transform,width,opacity,padding,border] duration-300 lg:static lg:z-auto lg:h-full lg:max-w-none lg:shrink-0 lg:rounded-lg lg:border lg:bg-slate-900/70 lg:p-4 lg:pt-4 lg:shadow-[0_0_30px_rgba(15,23,42,0.45)]"
+                    class="gf-panel-strong fixed inset-y-0 left-0 z-40 h-full w-[86vw] max-w-sm border-r p-4 pt-20 shadow-2xl transition-[transform,width,opacity,padding,border] duration-300 lg:static lg:z-auto lg:h-full lg:max-w-none lg:shrink-0 lg:rounded-lg lg:border lg:p-4 lg:pt-4 lg:shadow-[0_0_30px_rgba(15,23,42,0.45)]"
                     :class="isCatalogOpen ? 'translate-x-0 lg:w-80' : '-translate-x-full lg:w-0 lg:overflow-hidden lg:border-0 lg:p-0 lg:opacity-0'"
                 >
                     <div class="flex h-full min-h-0 flex-col">
                         <div class="mb-3 flex items-center justify-between gap-3">
                             <div>
                                 <h2 class="text-base font-semibold">Catálogo</h2>
-                                <p class="mt-1 text-xs text-slate-500">{{ roms.length }} juegos disponibles</p>
+                                <p class="gf-text-subtle mt-1 text-xs">{{ roms.length }} juegos disponibles</p>
                             </div>
                         </div>
 
@@ -111,25 +111,25 @@ defineOptions({
                                 :href="route('play', { game: rom.slug })"
                                 class="block rounded-lg border px-3 py-3 no-underline transition-all"
                                 :class="rom.slug === selectedRom?.slug
-                                    ? 'border-cyan-400/60 bg-cyan-400/10 shadow-[0_0_18px_rgba(34,211,238,0.14)]'
-                                    : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/10'"
+                                    ? 'gf-chip-accent shadow-[0_0_18px_rgba(34,211,238,0.14)]'
+                                    : 'gf-panel-soft gf-panel-soft-hover'"
                             >
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="min-w-0">
-                                        <p class="truncate text-sm font-semibold text-slate-100">{{ rom.title }}</p>
-                                        <p class="mt-1 text-[11px] uppercase tracking-[0.22em] text-slate-500">{{ rom.region || 'Región no indicada' }}</p>
+                                        <p class="truncate text-sm font-semibold">{{ rom.title }}</p>
+                                        <p class="gf-text-subtle mt-1 text-[11px] uppercase tracking-[0.22em]">{{ rom.region || 'Región no indicada' }}</p>
                                     </div>
                                     <span
                                         class="shrink-0 rounded-md px-2 py-1 text-[10px] font-semibold"
                                         :class="rom.is_installed
-                                            ? 'border border-emerald-400/20 bg-emerald-500/10 text-emerald-300'
-                                            : 'border border-amber-400/20 bg-amber-500/10 text-amber-300'"
+                                            ? 'gf-chip-success'
+                                            : 'gf-chip-warning'"
                                     >
                                         {{ rom.is_installed ? 'Instalado' : 'Falta' }}
                                     </span>
                                 </div>
 
-                                <p class="mt-2 line-clamp-2 text-xs leading-5 text-slate-400">
+                                <p class="gf-text-muted mt-2 line-clamp-2 text-xs leading-5">
                                     {{ rom.description || 'Sin descripcion.' }}
                                 </p>
                             </Link>
@@ -143,21 +143,21 @@ defineOptions({
                     @click="isCatalogOpen = false"
                 ></div>
 
-                <section class="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-lg border border-white/10 bg-slate-900/70 shadow-[0_0_30px_rgba(15,23,42,0.45)]">
-                    <div v-if="selectedRom" class="flex flex-col gap-3 border-b border-white/10 px-4 py-3 xl:flex-row xl:items-center xl:justify-between">
+                <section class="gf-panel flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-lg">
+                    <div v-if="selectedRom" class="flex flex-col gap-3 border-b px-4 py-3 xl:flex-row xl:items-center xl:justify-between" :style="{ borderColor: 'var(--gf-line)' }">
                         <div class="min-w-0">
                             <div class="flex flex-wrap items-center gap-2">
                                 <h2 class="truncate text-lg font-semibold tracking-tight">{{ selectedRom.title }}</h2>
                                 <span
                                     class="rounded-md px-2 py-1 text-[11px] font-semibold"
                                     :class="selectedRom.is_installed
-                                        ? 'border border-emerald-400/20 bg-emerald-500/10 text-emerald-300'
-                                        : 'border border-amber-400/20 bg-amber-500/10 text-amber-300'"
+                                        ? 'gf-chip-success'
+                                        : 'gf-chip-warning'"
                                 >
                                     {{ selectedRom.is_installed ? 'ROM disponible' : 'Pendiente de copiar' }}
                                 </span>
                             </div>
-                            <p class="mt-1 truncate text-sm text-slate-400">
+                            <p class="gf-text-muted mt-1 truncate text-sm">
                                 {{ selectedRom.description || 'Sin descripcion disponible.' }}
                             </p>
                         </div>
@@ -176,16 +176,16 @@ defineOptions({
 
                     <div
                         v-else
-                        class="flex min-h-0 flex-1 items-center justify-center bg-slate-950/50 px-6 text-center"
+                        class="gf-panel-strong flex min-h-0 flex-1 items-center justify-center px-6 text-center"
                     >
                         <div class="max-w-xl">
-                            <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-lg border border-cyan-300/30 bg-cyan-300/10 text-xl font-black text-cyan-100 shadow-[0_0_25px_rgba(56,189,248,0.22)]">
+                            <div class="gf-chip gf-chip-accent mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-lg text-xl font-black shadow-[0_0_25px_rgba(56,189,248,0.22)]">
                                 GF
                             </div>
-                            <h3 class="text-xl font-semibold text-slate-100">
+                            <h3 class="text-xl font-semibold">
                                 {{ selectedRom?.is_installed ? 'El emulador esta pendiente' : 'Falta copiar la ROM' }}
                             </h3>
-                            <p class="mt-3 text-sm leading-6 text-slate-400">
+                            <p class="gf-text-muted mt-3 text-sm leading-6">
                                 <span v-if="selectedRom?.is_installed">
                                     El juego ya esta registrado, pero el emulador `gbajs2` no esta completo en el repositorio actual.
                                 </span>

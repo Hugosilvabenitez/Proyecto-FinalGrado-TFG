@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\UserSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -31,15 +32,32 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
+        if ($user) {
+            $user->loadMissing([
+                'roles:id,name',
+                'stats:user_id,total_minutes,cloud_saves,achievements_unlocked',
+                'config:'.implode(',', UserSettings::settingsSelectColumns()),
+            ]);
+        }
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $user ? [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'roles' => $request->user()->roles,
-                    'avatar_url' => $request->user()->avatar_url,
+                    'email_verified_at' => $user->email_verified_at,
+                    'roles' => $user->roles,
+                    'avatar_url' => $user->avatar_url,
+                    'stats' => $user->stats,
+                    'emulator_preferences' => UserSettings::resolveEmulatorPreferences($user->config),
+                    'ui_theme' => UserSettings::resolveTheme($user->config),
                 ] : null,
+            ],
+            'ui' => [
+                'emulator_background_presets' => UserSettings::backgroundPresets(),
+                'supports_emulator_background' => UserSettings::hasEmulatorBackgroundColumn(),
+                'theme_presets' => UserSettings::themePresets(),
             ],
         ]);
     }

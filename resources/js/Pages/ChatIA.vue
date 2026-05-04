@@ -85,8 +85,8 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 const messageClass = (role: Message['role']) => {
     return role === 'user'
-        ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 text-white rounded-2xl rounded-br-sm shadow-[0_0_20px_rgba(56,189,248,0.35)]'
-        : 'bg-white/5 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-2xl rounded-bl-sm shadow-[0_0_20px_rgba(15,23,42,0.6)]';
+        ? 'gf-message-user rounded-2xl rounded-br-sm'
+        : 'gf-message-assistant rounded-2xl rounded-bl-sm backdrop-blur-2xl';
 };
 
 defineOptions({
@@ -99,40 +99,37 @@ defineOptions({
 
         <template>
             <div class="space-y-2">
-                <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Assistant</p>
-                <h2 class="text-xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-500 bg-clip-text text-transparent tracking-tight">
+                <p class="gf-text-subtle text-xs uppercase tracking-[0.35em]">Assistant</p>
+                <h2 class="gf-title-gradient text-xl font-semibold leading-tight tracking-tight">
                     Chat IA
                 </h2>
             </div>
         </template>
 
-        <div class="h-[calc(100vh-4rem)] overflow-hidden bg-slate-950 text-slate-100">
+        <div class="gf-page h-[calc(100vh-4rem)] overflow-hidden">
             <div class="relative h-full">
                 <div class="pointer-events-none absolute inset-0">
-                    <div class="absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 opacity-25 blur-3xl"></div>
-                    <div class="absolute -bottom-40 -right-20 h-80 w-80 rounded-full bg-gradient-to-tr from-fuchsia-500 via-orange-400 to-yellow-300 opacity-20 blur-3xl"></div>
+                    <div class="gf-page-orb-primary absolute -top-32 -left-24 h-72 w-72 rounded-full"></div>
+                    <div class="gf-page-orb-secondary absolute -bottom-40 -right-20 h-80 w-80 rounded-full"></div>
                 </div>
 
-                <div
-                    class="pointer-events-none absolute inset-0 opacity-25 mix-blend-soft-light"
-                    style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%221%22 height=%221%22 fill=%22%23ffffff%22 opacity=%220.12%22/></svg>');"
-                ></div>
+                <div class="gf-page-grid pointer-events-none absolute inset-0"></div>
 
                 <div class="relative z-10 flex h-full flex-col px-3 py-3 sm:px-4">
-                    <div class="mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/75 shadow-[0_0_45px_rgba(15,23,42,0.85)] backdrop-blur-2xl">
-                        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
+                    <div class="gf-panel mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-[2rem] backdrop-blur-2xl">
+                        <div class="flex items-center justify-between border-b px-5 py-4 sm:px-6" :style="{ borderColor: 'var(--gf-line)' }">
                             <div class="flex items-center gap-3">
                                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 text-lg shadow-[0_0_18px_rgba(56,189,248,0.45)]">
                                     🎮
                                 </div>
 
                                 <div>
-                                    <h3 class="text-base font-semibold text-white">GameFlux IA</h3>
-                                    <p class="text-xs text-slate-400">Asistente para descubrir juegos</p>
+                                    <h3 class="text-base font-semibold">GameFlux IA</h3>
+                                    <p class="gf-text-subtle text-xs">Asistente para descubrir juegos</p>
                                 </div>
                             </div>
 
-                            <div class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                            <div class="gf-chip gf-chip-success rounded-full px-3 py-1 text-xs font-semibold">
                                 Online
                             </div>
                         </div>
@@ -167,11 +164,11 @@ defineOptions({
                                         🎮
                                     </div>
 
-                                    <div class="rounded-2xl rounded-bl-sm border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-2xl">
+                                    <div class="gf-message-assistant rounded-2xl rounded-bl-sm px-4 py-3 backdrop-blur-2xl">
                                         <span class="flex items-center gap-1.5">
-                                            <span class="h-2 w-2 animate-bounce rounded-full bg-slate-400" style="animation-delay: 0ms"></span>
-                                            <span class="h-2 w-2 animate-bounce rounded-full bg-slate-400" style="animation-delay: 150ms"></span>
-                                            <span class="h-2 w-2 animate-bounce rounded-full bg-slate-400" style="animation-delay: 300ms"></span>
+                                            <span class="gf-text-subtle h-2 w-2 animate-bounce rounded-full" style="animation-delay: 0ms; background: var(--gf-subtle);"></span>
+                                            <span class="gf-text-subtle h-2 w-2 animate-bounce rounded-full" style="animation-delay: 150ms; background: var(--gf-subtle);"></span>
+                                            <span class="gf-text-subtle h-2 w-2 animate-bounce rounded-full" style="animation-delay: 300ms; background: var(--gf-subtle);"></span>
                                         </span>
                                     </div>
                                 </div>
@@ -180,22 +177,23 @@ defineOptions({
                             </div>
                         </div>
 
-                        <div class="border-t border-white/10 bg-slate-950/70 p-4 sm:p-5">
-                            <div class="mx-auto flex max-w-4xl items-end gap-3 rounded-[1.5rem] border border-white/10 bg-white/5 p-3 shadow-[0_0_20px_rgba(15,23,42,0.6)] backdrop-blur-2xl">
+                        <div class="gf-panel-strong border-t p-4 sm:p-5" :style="{ borderColor: 'var(--gf-line)' }">
+                            <div class="gf-panel-soft mx-auto flex max-w-4xl items-end gap-3 rounded-[1.5rem] p-3 backdrop-blur-2xl">
                                 <textarea
                                     ref="inputRef"
                                     v-model="userInput"
                                     @keydown="handleKeydown"
                                     placeholder="Escribe tu mensaje..."
                                     rows="1"
-                                    class="max-h-40 flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+                                    class="max-h-40 flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none"
+                                    :style="{ color: 'var(--gf-text)' }"
                                 ></textarea>
 
                                 <button
                                     type="button"
                                     @click="sendMessage"
                                     :disabled="loading || !userInput.trim()"
-                                    class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 text-white shadow-[0_0_20px_rgba(56,189,248,0.6)] transition hover:scale-105 hover:shadow-[0_0_30px_rgba(244,114,182,0.8)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+                                    class="gf-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
                                 >
                                     <svg
                                         class="h-4 w-4"

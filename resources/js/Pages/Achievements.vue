@@ -39,8 +39,8 @@ const formatDate = (value?: string | null) => {
 
 const stateClasses = (unlocked: boolean) => {
     return unlocked
-        ? 'border-cyan-400/20 bg-cyan-400/10 text-cyan-300'
-        : 'border-white/10 bg-white/5 text-slate-400';
+        ? 'gf-chip-accent'
+        : 'gf-chip';
 };
 
 const stateLabel = (unlocked: boolean) => {
@@ -49,8 +49,8 @@ const stateLabel = (unlocked: boolean) => {
 
 const stateGlow = (unlocked: boolean) => {
     return unlocked
-        ? 'shadow-[0_0_30px_rgba(56,189,248,0.14)] hover:border-cyan-400/30'
-        : 'hover:border-white/20';
+        ? 'gf-panel-hover-accent shadow-[0_0_30px_rgba(56,189,248,0.14)]'
+        : 'gf-panel-hover-secondary';
 };
 
 const iconFallback = (achievement: Achievement) => {
@@ -64,58 +64,58 @@ defineOptions({
 
 <template>
     <Head title="Logros · GameFlux" />
-        <div class="min-h-screen bg-slate-950 px-4 py-8 text-slate-100 sm:px-6 lg:px-8">
+        <div class="gf-page min-h-screen px-4 py-8 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-7xl space-y-8">
                 <section class="grid gap-4 lg:grid-cols-[1.35fr_0.85fr_0.85fr]">
-                    <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.16),_transparent_40%),linear-gradient(180deg,rgba(15,23,42,.88),rgba(2,6,23,.96))] p-7 shadow-[0_0_40px_rgba(15,23,42,0.8)]">
-                        <div class="absolute right-0 top-0 h-44 w-44 rounded-full bg-cyan-400/10 blur-3xl"></div>
+                    <div class="gf-panel-hero relative overflow-hidden rounded-[2rem] p-7">
+                        <div class="gf-page-orb-primary absolute right-0 top-0 h-44 w-44 rounded-full"></div>
 
                         <div class="relative space-y-4">
-                            <div class="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-300">
+                            <div class="gf-chip gf-chip-accent inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em]">
                                 Achievements
                             </div>
 
                             <div>
-                                <h1 class="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                                <h1 class="text-3xl font-black tracking-tight sm:text-4xl">
                                     Logros del jugador
                                 </h1>
-                                <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+                                <p class="gf-text-muted mt-3 max-w-2xl text-sm leading-6">
                                     Consulta tu progreso, revisa qué recompensas ya has desbloqueado y cuáles siguen pendientes.
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
-                        <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Progreso</p>
-                        <p class="mt-3 text-3xl font-black text-cyan-300">
+                    <div class="gf-panel rounded-[2rem] p-6 backdrop-blur-xl">
+                        <p class="gf-text-subtle text-xs uppercase tracking-[0.28em]">Progreso</p>
+                        <p class="gf-text-accent mt-3 text-3xl font-black">
                             {{ achievements.filter((a) => a.unlocked).length }}
                         </p>
-                        <p class="mt-2 text-sm text-slate-500">Logros desbloqueados</p>
-                        <div class="mt-6 h-px bg-white/10"></div>
-                        <p class="mt-5 text-sm text-slate-400">
+                        <p class="gf-text-subtle mt-2 text-sm">Logros desbloqueados</p>
+                        <div class="gf-divider mt-6 h-px"></div>
+                        <p class="gf-text-muted mt-5 text-sm">
                             Sigue completando retos para subir tu nivel.
                         </p>
                     </div>
 
-                    <div class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
-                        <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Total</p>
-                        <p class="mt-3 text-3xl font-black text-white">
+                    <div class="gf-panel rounded-[2rem] p-6 backdrop-blur-xl">
+                        <p class="gf-text-subtle text-xs uppercase tracking-[0.28em]">Total</p>
+                        <p class="mt-3 text-3xl font-black">
                             {{ achievements.length }}
                         </p>
-                        <p class="mt-2 text-sm text-slate-500">Logros disponibles</p>
-                        <div class="mt-6 h-px bg-white/10"></div>
-                        <p class="mt-5 text-sm text-slate-400">
+                        <p class="gf-text-subtle mt-2 text-sm">Logros disponibles</p>
+                        <div class="gf-divider mt-6 h-px"></div>
+                        <p class="gf-text-muted mt-5 text-sm">
                             Recompensas de progreso y juego.
                         </p>
                     </div>
                 </section>
 
-                <section class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-5 shadow-[0_0_35px_rgba(15,23,42,0.75)] backdrop-blur-2xl sm:p-6">
+                <section class="gf-panel rounded-[2rem] p-5 backdrop-blur-2xl sm:p-6">
                     <div class="mb-5 flex items-center justify-between gap-4">
                         <div>
-                            <h3 class="text-lg font-semibold text-white">Colección</h3>
-                            <p class="text-sm text-slate-400">Consulta los logros disponibles.</p>
+                            <h3 class="text-lg font-semibold">Colección</h3>
+                            <p class="gf-text-muted text-sm">Consulta los logros disponibles.</p>
                         </div>
                     </div>
 
@@ -128,15 +128,15 @@ defineOptions({
                             <div class="flex items-start justify-between gap-4">
                                 <div class="flex items-center gap-4">
                                     <div
-                                        class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/70 text-2xl">
+                                        class="gf-panel-strong flex h-14 w-14 items-center justify-center rounded-2xl text-2xl">
                                         {{ iconFallback(achievement) }}
                                     </div>
 
                                     <div>
-                                        <h4 class="text-base font-semibold text-white">
+                                        <h4 class="text-base font-semibold">
                                             {{ achievement.name }}
                                         </h4>
-                                        <p class="mt-1 text-sm text-slate-400">
+                                        <p class="gf-text-muted mt-1 text-sm">
                                             {{ achievement.description }}
                                         </p>
                                     </div>
@@ -150,16 +150,16 @@ defineOptions({
                             </div>
 
                             <div class="mt-5 grid grid-cols-2 gap-3">
-                                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-3">
-                                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">Puntos</p>
-                                    <p class="mt-1 text-sm font-semibold text-white">
+                                <div class="gf-panel-strong rounded-2xl p-3">
+                                    <p class="gf-text-subtle text-[11px] uppercase tracking-[0.22em]">Puntos</p>
+                                    <p class="mt-1 text-sm font-semibold">
                                         {{ achievement.points ?? 0 }}
                                     </p>
                                 </div>
 
-                                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-3">
-                                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">Fecha</p>
-                                    <p class="mt-1 text-sm font-semibold text-white">
+                                <div class="gf-panel-strong rounded-2xl p-3">
+                                    <p class="gf-text-subtle text-[11px] uppercase tracking-[0.22em]">Fecha</p>
+                                    <p class="mt-1 text-sm font-semibold">
                                         {{ formatDate(achievement.unlocked_at) }}
                                     </p>
                                 </div>
@@ -168,9 +168,9 @@ defineOptions({
 
                         <div
                             v-if="!achievements.length"
-                            class="col-span-full rounded-[1.5rem] border border-dashed border-white/10 bg-white/[0.03] px-6 py-14 text-center">
-                            <p class="text-lg font-semibold text-white">No hay logros todavía</p>
-                            <p class="mt-2 text-sm text-slate-500">
+                            class="gf-panel-soft col-span-full rounded-[1.5rem] border-dashed px-6 py-14 text-center">
+                            <p class="text-lg font-semibold">No hay logros todavía</p>
+                            <p class="gf-text-subtle mt-2 text-sm">
                                 Cuando el servidor envíe los datos, aparecerán aquí.
                             </p>
                         </div>

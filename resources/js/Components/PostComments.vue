@@ -75,7 +75,7 @@ const orderedComments = computed(() => comments.value);
             <div
                 v-for="comment in orderedComments"
                 :key="comment.id"
-                class="rounded-2xl border border-white/10 bg-slate-950/60 p-3">
+                class="gf-panel-strong rounded-2xl p-3">
                 <div class="flex items-start gap-3">
                     <img
                         :src="avatarFromUser(comment.user)"
@@ -85,7 +85,7 @@ const orderedComments = computed(() => comments.value);
 
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between gap-3">
-                            <p class="text-sm font-semibold text-cyan-300 truncate">
+                            <p class="gf-text-accent truncate text-sm font-semibold">
                                 {{ firstName(comment.user?.name) }}
                             </p>
 
@@ -95,7 +95,7 @@ const orderedComments = computed(() => comments.value);
 
                         </div>
 
-                        <p class="mt-1 text-sm text-slate-200 leading-6">
+                        <p class="gf-text-muted mt-1 text-sm leading-6">
                             {{ comment.content }}
                         </p>
                     </div>
@@ -108,13 +108,13 @@ const orderedComments = computed(() => comments.value);
                 v-model="form.content"
                 type="text"
                 placeholder="Escribe un comentario..."
-                class="flex-1 rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+                class="gf-input flex-1 rounded-2xl px-4 py-3 text-sm transition"
             />
 
             <button
                 type="submit"
                 :disabled="form.processing"
-                class="rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_0_18px_rgba(56,189,248,0.6)] transition hover:shadow-[0_0_26px_rgba(244,114,182,0.75)] disabled:cursor-not-allowed disabled:opacity-50"
+                class="gf-button-primary rounded-2xl px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
             >
                 Enviar
             </button>
