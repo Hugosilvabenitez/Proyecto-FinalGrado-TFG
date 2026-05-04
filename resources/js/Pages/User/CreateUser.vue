@@ -2,6 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+/**
+ * USER'S CREATE AREA 
+ * 
+ * THESE AREA CONTAINS THE USER'S CREATION FUNCTIONALITY
+*/
+
 interface Role {
     id: number;
     name: string;
@@ -52,7 +58,7 @@ defineOptions({
 
                         <div class="relative space-y-4">
                             <div class="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-300">
-                                New account
+                                Cuenta nueva
                             </div>
 
                             <div>
@@ -82,16 +88,12 @@ defineOptions({
                         <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Estado</p>
                         <p class="mt-3 text-3xl font-black text-cyan-300">Borrador</p>
                         <p class="mt-2 text-sm text-slate-500">Formulario listo para crear.</p>
-                        <div class="mt-6 h-px bg-white/10"></div>
-                        <p class="mt-5 text-sm text-slate-400">La cuenta se enviará al guardar.</p>
                     </div>
 
                     <div class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
                         <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Roles</p>
                         <p class="mt-3 text-3xl font-black text-white">{{ roles.length }}</p>
                         <p class="mt-2 text-sm text-slate-500">Opciones asignables</p>
-                        <div class="mt-6 h-px bg-white/10"></div>
-                        <p class="mt-5 text-sm text-slate-400">Selecciona uno o varios perfiles.</p>
                     </div>
                 </section>
 
@@ -217,7 +219,7 @@ defineOptions({
                             <h3 class="text-lg font-semibold text-white">Vista previa</h3>
                             <div class="mt-5 rounded-3xl border border-white/10 bg-slate-950/70 p-5">
                                 <p class="text-xs uppercase tracking-[0.24em] text-slate-500">
-                                    Username
+                                    Usuario
                                 </p>
                                 <p class="mt-2 text-lg font-bold text-white">
                                     {{ form.username || 'jugador123' }}

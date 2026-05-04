@@ -2,6 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
+/**
+ * USER'S CRUD AREA
+ * 
+ * THESE AREA CONTAINS ALL THE USERS CRUD
+*/
+
 interface Role {
   id: number;
   name: string;
@@ -78,7 +84,7 @@ defineOptions({
             <div class="absolute right-0 top-0 h-40 w-40 rounded-full bg-cyan-400/10 blur-3xl"></div>
             <div class="relative space-y-4">
               <div class="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-300">
-                Users control
+                Control de usuarios
               </div>
 
               <div>
@@ -109,16 +115,12 @@ defineOptions({
             <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Página</p>
             <p class="mt-3 text-4xl font-black text-white">{{ users.current_page }}</p>
             <p class="mt-2 text-sm text-slate-500">de {{ users.last_page }}</p>
-            <div class="mt-6 h-px bg-white/10"></div>
-            <p class="mt-5 text-sm text-slate-400">Navegación paginada del índice.</p>
           </div>
 
           <div class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
             <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Estado</p>
             <p class="mt-3 text-3xl font-black text-cyan-300">Activo</p>
             <p class="mt-2 text-sm text-slate-500">Panel en funcionamiento.</p>
-            <div class="mt-6 h-px bg-white/10"></div>
-            <p class="mt-5 text-sm text-slate-400">Diseño optimizado para lectura rápida.</p>
           </div>
         </section>
 
@@ -232,7 +234,12 @@ defineOptions({
                   v-for="link in users.links"
                   :key="link.label"
                   :href="link.url || ''"
-                  v-html="link.label"
+                  v-html="
+                    link.label.includes('Previous')
+                      ? 'Atrás'
+                      : link.label.includes('Next')
+                      ? 'Siguiente'
+                      : link.label"
                   class="rounded-2xl border px-4 py-2 text-sm transition"
                   :class="[
                     link.active
@@ -246,5 +253,4 @@ defineOptions({
         </section>
       </div>
     </div>
-  
 </template>

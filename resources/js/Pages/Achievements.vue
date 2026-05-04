@@ -72,7 +72,7 @@ defineOptions({
 
                         <div class="relative space-y-4">
                             <div class="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-300">
-                                Achievements
+                                Logros
                             </div>
 
                             <div>
@@ -104,10 +104,6 @@ defineOptions({
                             {{ achievements.length }}
                         </p>
                         <p class="mt-2 text-sm text-slate-500">Logros disponibles</p>
-                        <div class="mt-6 h-px bg-white/10"></div>
-                        <p class="mt-5 text-sm text-slate-400">
-                            Recompensas de progreso y juego.
-                        </p>
                     </div>
                 </section>
 

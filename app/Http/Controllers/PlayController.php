@@ -62,11 +62,17 @@ class PlayController extends Controller
         $emulatorIndexPath = public_path('emulator/gbajs2/index.html');
         $emulatorIndexUrl = asset('emulator/gbajs2/index.html');
         $romUrl = route('roms.stream', ['rom' => $rom->slug]);
+        $saveScope = hash_hmac('sha256', (string) auth()->id(), config('app.key'));
 
         return response()->view('emulator', [
             'rom' => $rom,
             'emulatorReady' => file_exists($emulatorIndexPath),
-            'emulatorIndexUrl' => $emulatorIndexUrl.'?rom='.rawurlencode($romUrl),
+            'emulatorIndexUrl' => $emulatorIndexUrl
+                .'?rom='.rawurlencode($romUrl)
+                .'&save_scope='.rawurlencode($saveScope)
+                .'&rom_id='.rawurlencode((string) $rom->id)
+                .'&save_state_url='.rawurlencode(route('save-states.register'))
+                .'&csrf_token='.rawurlencode(csrf_token()),
             'romUrl' => $romUrl,
         ]);
     }

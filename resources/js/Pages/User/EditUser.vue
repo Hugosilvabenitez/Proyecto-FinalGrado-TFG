@@ -2,6 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+/**
+ * USER'S EDIT AREA 
+ * 
+ * THESE AREA CONTAINS THE USER'S EDITION FUNCTIONALITY
+*/
+
 interface Role {
   id: number;
   name: string;

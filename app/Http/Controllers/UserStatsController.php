@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\AchievementService;
+use App\Models\Rom;
+use App\Models\SaveState;
 
 /**
 * Class UserStatsController (Controller)
@@ -44,6 +46,40 @@ class UserStatsController extends Controller
         $user->stats->increment('achievements_unlocked');
 
         return response()->json(['success' => true]);
+    }
+
+    public function registerCloudSave(Request $request)
+    {
+        $data = $request->validate([
+            'rom_id' => ['required', 'integer', 'exists:roms,id'],
+            'slot_number' => ['nullable', 'integer', 'min:1', 'max:99'],
+            'save_key' => ['required', 'string', 'max:255', 'starts_with:com.endrift.gbajs.user.'],
+        ]);
+
+        $user = auth()->user();
+        $rom = Rom::query()->findOrFail($data['rom_id']);
+        $slotNumber = $data['slot_number'] ?? 1;
+
+        $saveState = SaveState::query()->updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'rom_id' => $rom->id,
+                'slot_number' => $slotNumber,
+            ],
+            [
+                'save_name' => $rom->title.' - Slot '.$slotNumber,
+                'save_path' => $data['save_key'],
+            ]
+        );
+
+        if ($saveState->wasRecentlyCreated) {
+            $user->stats()->firstOrCreate()->increment('cloud_saves');
+        }
+
+        return response()->json([
+            'success' => true,
+            'save_state' => $saveState,
+        ]);
     }
 
     public function saveGame(AchievementService $service)

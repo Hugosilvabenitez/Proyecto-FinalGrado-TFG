@@ -488,7 +488,7 @@
 				load.textContent = 'Loading...';
 				load.removeAttribute('onclick');
 				let pause = document.getElementById('pause');
-				pause.textContent = 'PAUSE';
+				pause.textContent = 'Pausar';
 				gba.loadRomFromFile(file, function (result) {
 					if (result) {
 						for (let i = 0; i < runCommands.length; ++i) {
@@ -550,14 +550,14 @@
 					} else {
 						gba.runStable();
 					}
-					e.textContent = 'PAUSE';
+					e.textContent = 'Pausar';
 				} else {
 					if (debug && debug.gbaCon) {
 						debug.gbaCon.pause();
 					} else {
 						gba.pause();
 					}
-					e.textContent = 'UNPAUSE';
+					e.textContent = 'Reanudar';
 				}
 			}
 
@@ -711,27 +711,27 @@
 					</div>
 					<div id="ingame" class="hidden">
 						<button id="pause" class="bigbutton" onclick="togglePause()">
-							PAUSE
+							Pausa
 						</button>
 						<button class="bigbutton" onclick="reset()" style="display: none;">RESET</button>
 						<button onclick="gba.downloadSavedata()" style="display: none;">
 							Download Savegame
 						</button>
-						<button onclick="screenshot()">Screenshot</button>
-						<button onclick="fullScreen()">Full screen</button>
+						<button onclick="screenshot()">Captura de pantalla</button>
+						<button onclick="fullScreen()">Pantalla completa</button>
 						<label id="pixelated">
 							<input
 								type="checkbox"
 								onchange="setPixelated(this.checked)"
 							/>
-							<p>Pixelated</p>
+							<p>Pixelado</p>
 						</label>
 						<div id="sound">
 							<input
 								type="checkbox"
 								onchange="gba.audio.masterEnable = this.checked; if (gba.audio.context.state !== 'running') {gba.audio.context.resume();}"
 							/>
-							<p>Sound</p>
+							<p>Sonido</p>
 							<input
 								type="range"
 								min="0"
@@ -742,7 +742,7 @@
 								oninput="setVolume(this.value)"
 							/>
 						</div>
-						<p id="openDebug" onclick="enableDebug()">Debugger</p>
+						<p id="openDebug" onclick="enableDebug()" style="display: none;">Debugger</p>
 					</div>
 				</section>
 
@@ -768,20 +768,20 @@
 					<p>Traducción de controles (izquierda - derecha):</p>
 					<table id="mapping">
 						<tr>
-							<td>Up</td>
-							<td>Up</td>
+							<td>Flecha Arriba</td>
+							<td>Flecha Arriba</td>
 						</tr>
 						<tr>
-							<td>Down</td>
-							<td>Down</td>
+							<td>Flecha Abajo</td>
+							<td>Flecha Abajo</td>
 						</tr>
 						<tr>
-							<td>Left</td>
-							<td>Left</td>
+							<td>Flecha Izquierda</td>
+							<td>Flecha Izquierda</td>
 						</tr>
 						<tr>
-							<td>Right</td>
-							<td>Right</td>
+							<td>Flecha Derecha</td>
+							<td>Flecha Derecha</td>
 						</tr>
 						<tr>
 							<td>A</td>
@@ -800,11 +800,11 @@
 							<td>S</td>
 						</tr>
 						<tr>
-							<td>Start</td>
+							<td>Inicio</td>
 							<td>Enter</td>
 						</tr>
 						<tr>
-							<td>Select</td>
+							<td>Seleccionar</td>
 							<td>\</td>
 						</tr>
 					</table>

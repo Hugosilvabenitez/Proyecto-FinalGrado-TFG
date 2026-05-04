@@ -3,6 +3,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { nextTick, onMounted, ref, watch } from 'vue';
 
+/**
+ * AI CHAT'S VIEW
+ * 
+ * These 
+ */
+
 interface Message {
     role: 'user' | 'assistant';
     content: string;
@@ -122,12 +128,14 @@ defineOptions({
                     <div class="mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/75 shadow-[0_0_45px_rgba(15,23,42,0.85)] backdrop-blur-2xl">
                         <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
                             <div class="flex items-center gap-3">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 text-lg shadow-[0_0_18px_rgba(56,189,248,0.45)]">
-                                    🎮
-                                </div>
-
+                            <img
+                                src="/images/santiago-ia.png"
+                                alt="Santiago IA"
+                                class="h-10 w-10 rounded-full object-cover border-4 border-cyan-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.75)] group-hover:scale-110 transition-transform"
+                            />
+                                
                                 <div>
-                                    <h3 class="text-base font-semibold text-white">GameFlux IA</h3>
+                                    <h3 class="text-base font-semibold text-white">Santiago</h3>
                                     <p class="text-xs text-slate-400">Asistente para descubrir juegos</p>
                                 </div>
                             </div>
@@ -145,12 +153,12 @@ defineOptions({
                                     class="flex items-end gap-2"
                                     :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
                                 >
-                                    <div
+                                    <img
                                         v-if="msg.role === 'assistant'"
-                                        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 text-sm shadow-[0_0_14px_rgba(56,189,248,0.6)]"
-                                    >
-                                        🎮
-                                    </div>
+                                        src="/images/santiago-ia.png"
+                                        alt="Santiago IA"
+                                        class="h-10 w-10 rounded-full object-cover border-4 border-cyan-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.75)] group-hover:scale-110 transition-transform"
+                                    />
 
                                     <div
                                         class="max-w-[85%] px-4 py-3 text-sm leading-relaxed sm:max-w-[70%]"
@@ -188,7 +196,8 @@ defineOptions({
                                     @keydown="handleKeydown"
                                     placeholder="Escribe tu mensaje..."
                                     rows="1"
-                                    class="max-h-40 flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+                                    class="max-h-40 flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-100 placeholder:text-slate-500 outline-none border-none ring-0 focus:ring-0 focus:outline-none"
+
                                 ></textarea>
 
                                 <button

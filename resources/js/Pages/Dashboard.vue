@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { useStats } from '@/state/statsStore';
 
@@ -17,12 +17,16 @@ const props = defineProps({
     auth: {
         type: Object,
     },
+    savedGames: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const stats = useStats();
 
 stats.total_minutes = props.auth.user.stats?.total_minutes || 0;
-stats.cloud_saves = props.auth.user.stats?.cloud_saves || 0;
+stats.cloud_saves = props.savedGames.length;
 stats.achievements_unlocked = props.auth.user.stats?.achievements_unlocked || 0;
 
 const formattedTime = computed(() => {
@@ -36,6 +40,93 @@ const formattedTime = computed(() => {
 const firstName = computed(() => {
     return props.auth?.user?.name?.split(' ')?.[0] || 'Trainer';
 });
+
+const svgToDataUri = (svg) => `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+
+const recommendations = [
+    {
+        title: 'The Legend of Zelda: The Minish Cap',
+        subtitle: 'Aventura, mazmorras y magia',
+        href: route('play', { game: 'the-legend-of-zelda-the-minish-cap' }),
+        borderClass: 'hover:border-emerald-400/60 hover:shadow-[0_0_20px_rgba(52,211,153,0.38)]',
+        image: svgToDataUri(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+                <defs>
+                    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+                        <stop offset="0" stop-color="#134e4a"/>
+                        <stop offset="0.55" stop-color="#166534"/>
+                        <stop offset="1" stop-color="#facc15"/>
+                    </linearGradient>
+                    <radialGradient id="glow" cx="50%" cy="42%" r="44%">
+                        <stop offset="0" stop-color="#fef08a" stop-opacity="0.95"/>
+                        <stop offset="1" stop-color="#fef08a" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <rect width="640" height="360" fill="url(#sky)"/>
+                <circle cx="420" cy="110" r="135" fill="url(#glow)"/>
+                <path d="M0 242 C90 186 158 208 234 166 C334 112 410 152 484 112 C545 80 588 88 640 54 L640 360 L0 360 Z" fill="#052e16" opacity="0.88"/>
+                <path d="M0 284 C92 246 190 262 276 224 C384 176 485 200 640 142 L640 360 L0 360 Z" fill="#064e3b"/>
+                <path d="M108 126 L170 282 L46 282 Z" fill="#14532d"/>
+                <path d="M528 106 L594 282 L460 282 Z" fill="#14532d"/>
+                <path d="M319 70 L346 132 L412 138 L362 181 L378 246 L319 212 L260 246 L276 181 L226 138 L292 132 Z" fill="#fde68a" opacity="0.9"/>
+                <path d="M310 93 L334 147 L392 153 L348 190 L362 247 L310 217 L258 247 L272 190 L228 153 L286 147 Z" fill="#f59e0b" opacity="0.55"/>
+                <path d="M314 122 L314 252" stroke="#f8fafc" stroke-width="15" stroke-linecap="round"/>
+                <path d="M314 122 L292 164 L336 164 Z" fill="#e0f2fe"/>
+                <path d="M270 184 L358 184" stroke="#fbbf24" stroke-width="18" stroke-linecap="round"/>
+                <path d="M286 254 C286 226 342 226 342 254 L342 292 L286 292 Z" fill="#0f766e"/>
+                <path d="M298 258 L330 258 L330 292 L298 292 Z" fill="#facc15"/>
+            </svg>
+        `),
+    },
+    {
+        title: 'Mario Kart: Super Circuit',
+        subtitle: 'Carreras arcade a toda velocidad',
+        href: route('play', { game: 'mario-kart-super-circuit' }),
+        borderClass: 'hover:border-red-400/60 hover:shadow-[0_0_20px_rgba(248,113,113,0.38)]',
+        image: svgToDataUri(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+                <defs>
+                    <linearGradient id="sunset" x1="0" x2="1" y1="0" y2="1">
+                        <stop offset="0" stop-color="#38bdf8"/>
+                        <stop offset="0.52" stop-color="#f97316"/>
+                        <stop offset="1" stop-color="#dc2626"/>
+                    </linearGradient>
+                    <linearGradient id="road" x1="0" x2="1">
+                        <stop offset="0" stop-color="#111827"/>
+                        <stop offset="0.5" stop-color="#475569"/>
+                        <stop offset="1" stop-color="#111827"/>
+                    </linearGradient>
+                </defs>
+                <rect width="640" height="360" fill="url(#sunset)"/>
+                <circle cx="518" cy="82" r="52" fill="#fef3c7" opacity="0.95"/>
+                <path d="M0 166 C94 126 171 138 260 112 C362 82 438 121 640 70 L640 360 L0 360 Z" fill="#166534" opacity="0.86"/>
+                <path d="M0 250 C132 170 210 198 320 180 C443 160 520 184 640 126 L640 360 L0 360 Z" fill="#22c55e"/>
+                <path d="M250 164 C220 220 190 280 148 360 L492 360 C448 280 418 220 388 164 Z" fill="url(#road)"/>
+                <path d="M314 180 L306 216 M296 244 L284 298 M275 326 L268 360" stroke="#f8fafc" stroke-width="12" stroke-linecap="round" opacity="0.88"/>
+                <path d="M214 282 C250 230 386 230 426 282 L452 314 C420 338 230 338 188 314 Z" fill="#ef4444"/>
+                <path d="M246 252 C272 222 368 222 396 252 L376 276 L266 276 Z" fill="#fde047"/>
+                <circle cx="238" cy="316" r="34" fill="#020617"/>
+                <circle cx="402" cy="316" r="34" fill="#020617"/>
+                <circle cx="238" cy="316" r="15" fill="#94a3b8"/>
+                <circle cx="402" cy="316" r="15" fill="#94a3b8"/>
+                <path d="M90 194 H154 V226 H90 Z M122 226 H186 V258 H122 Z M454 190 H518 V222 H454 Z M486 222 H550 V254 H486 Z" fill="#f8fafc" opacity="0.9"/>
+                <path d="M90 194 H122 V226 H90 Z M154 226 H186 V258 H154 Z M454 190 H486 V222 H454 Z M518 222 H550 V254 H518 Z" fill="#020617" opacity="0.88"/>
+            </svg>
+        `),
+    },
+];
+
+const formatSavedAt = (date) => {
+    if (!date) return 'Sin fecha registrada';
+
+    return new Intl.DateTimeFormat('es-ES', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    }).format(new Date(date));
+};
 
 defineOptions({
     layout: AuthenticatedLayout,
@@ -73,11 +164,12 @@ defineOptions({
                 </div>
 
                 <div class="flex flex-col justify-center gap-3 sm:flex-row">
-                    <button
+                    <Link
+                        :href="route('play')"
                         class="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-[0_0_25px_rgba(56,189,248,0.9)] transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(244,114,182,0.9)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
                         Nueva partida
-                    </button>
+                    </Link>
 
                     <button
                         class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm text-slate-300 backdrop-blur-2xl transition-all hover:border-cyan-400/60 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(56,189,248,0.6)] sm:w-auto"
@@ -128,7 +220,7 @@ defineOptions({
                     </div>
                     <p class="mb-2 text-xs uppercase tracking-wide text-slate-400">Logros</p>
                     <p class="text-3xl font-bold text-slate-100">{{ stats.achievements_unlocked }}</p>
-                    <p class="mt-1 text-xs text-slate-500">De - totales</p>
+                    <p class="mt-1 text-xs text-slate-500">De 6 totales</p>
                 </div>
             </div>
 
@@ -144,39 +236,51 @@ defineOptions({
                                 />
                             </svg>
                         </div>
-                        <span class="truncate">Mis juegos recientes</span>
+                        <span class="truncate">Partidas guardadas</span>
                     </h2>
 
-                    <div class="space-y-4 min-w-0">
-                        <div class="flex min-w-0 items-center gap-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 transition-all hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)]">
-                            <div class="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
-                                <span class="text-2xl">🟥</span>
+                    <div v-if="savedGames.length" class="space-y-4 min-w-0">
+                        <Link
+                            v-for="save in savedGames"
+                            :key="save.id"
+                            :href="save.rom.play_url"
+                            class="flex min-w-0 items-center gap-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 no-underline transition-all hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+                        >
+                            <div class="flex h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
+                                <img
+                                    v-if="save.rom.cover_image"
+                                    :src="save.rom.cover_image"
+                                    :alt="`Carátula de ${save.rom.title}`"
+                                    class="h-full w-full object-cover"
+                                />
+                                <div v-else class="flex h-full w-full items-center justify-center text-sm font-black text-white">
+                                    GF
+                                </div>
                             </div>
 
                             <div class="min-w-0 flex-1">
-                                <p class="truncate font-semibold text-slate-200">Pokémon FireRed</p>
-                                <p class="truncate text-sm text-slate-400">Última partida: hace 2h</p>
+                                <p class="truncate font-semibold text-slate-200">{{ save.rom.title }}</p>
+                                <p class="truncate text-sm text-slate-400">{{ save.save_name }}</p>
+                                <p class="truncate text-xs text-slate-500">Guardada: {{ formatSavedAt(save.updated_at) }}</p>
                             </div>
 
                             <div class="shrink-0 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-xs font-semibold text-white shadow-lg transition-transform hover:scale-105">
                                 Continuar
                             </div>
-                        </div>
+                        </Link>
+                    </div>
 
-                        <div class="flex min-w-0 items-center gap-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 transition-all hover:border-fuchsia-400/60 hover:shadow-[0_0_20px_rgba(244,114,182,0.4)]">
-                            <div class="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-red-600 shadow-lg">
-                                <span class="text-2xl">⭐</span>
-                            </div>
-
-                            <div class="min-w-0 flex-1">
-                                <p class="truncate font-semibold text-slate-200">Zelda: Minish Cap</p>
-                                <p class="truncate text-sm text-slate-400">Última partida: hace 1 día</p>
-                            </div>
-
-                            <div class="shrink-0 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-xs font-semibold text-white shadow-lg transition-transform hover:scale-105">
-                                Continuar
-                            </div>
-                        </div>
+                    <div v-else class="rounded-2xl border border-dashed border-slate-700/70 bg-slate-900/40 p-6 text-center">
+                        <p class="text-sm font-semibold text-slate-200">Todavía no hay partidas guardadas</p>
+                        <p class="mt-2 text-sm leading-6 text-slate-400">
+                            Cuando guardes una partida desde el emulador aparecerá aquí para continuarla rápido.
+                        </p>
+                        <Link
+                            :href="route('play')"
+                            class="mt-4 inline-flex rounded-xl bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cyan-200 transition hover:bg-cyan-400/15"
+                        >
+                            Ir al catálogo
+                        </Link>
                     </div>
                 </div>
 
@@ -191,21 +295,23 @@ defineOptions({
                     </h2>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div class="group cursor-pointer rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 transition-all hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] min-w-0">
-                            <div class="mb-3 flex h-24 w-full items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg transition-transform group-hover:scale-[1.02]">
-                                <span class="text-2xl">🍄</span>
+                        <Link
+                            v-for="game in recommendations"
+                            :key="game.title"
+                            :href="game.href"
+                            class="group rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 no-underline transition-all min-w-0"
+                            :class="game.borderClass"
+                        >
+                            <div class="mb-3 h-28 w-full overflow-hidden rounded-xl bg-slate-950 shadow-lg transition-transform group-hover:scale-[1.02]">
+                                <img
+                                    :src="game.image"
+                                    :alt="`Imagen recomendada de ${game.title}`"
+                                    class="h-full w-full object-cover"
+                                />
                             </div>
-                            <p class="truncate text-sm font-semibold text-slate-200">Mario Kart GBA</p>
-                            <p class="truncate text-xs text-slate-500 mt-1">Clásico multijugador</p>
-                        </div>
-
-                        <div class="group cursor-pointer rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 transition-all hover:border-orange-400/60 hover:shadow-[0_0_20px_rgba(251,146,60,0.4)] min-w-0">
-                            <div class="mb-3 flex h-24 w-full items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg transition-transform group-hover:scale-[1.02]">
-                                <span class="text-2xl">🦎</span>
-                            </div>
-                            <p class="truncate text-sm font-semibold text-slate-200">Metroid Fusion</p>
-                            <p class="truncate text-xs text-slate-500 mt-1">Aventura sci-fi</p>
-                        </div>
+                            <p class="truncate text-sm font-semibold text-slate-200">{{ game.title }}</p>
+                            <p class="truncate text-xs text-slate-500 mt-1">{{ game.subtitle }}</p>
+                        </Link>
                     </div>
                 </div>
             </div>
