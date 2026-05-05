@@ -19,11 +19,77 @@ class UserSettings extends Model
 {
     protected static ?bool $hasEmulatorBackgroundColumn = null;
 
+    protected static ?bool $hasCustomPaletteColumn = null;
+
     public const DEFAULT_AUDIO_VOLUME = 100;
 
     public const DEFAULT_BACKGROUND = 'nebula';
 
     public const DEFAULT_THEME = 'nebula';
+
+    public const CUSTOM_THEME = 'custom';
+
+    public const DEFAULT_CUSTOM_PALETTE = [
+        'background' => '#020617',
+        'surface' => '#0f172a',
+        'text' => '#f8fafc',
+        'accent' => '#67e8f9',
+        'secondary' => '#f472b6',
+    ];
+
+    public const PALETTE_FIELDS = [
+        'background' => [
+            'label' => 'Fondo',
+            'description' => 'Base general de pantallas y emulador.',
+        ],
+        'surface' => [
+            'label' => 'Paneles',
+            'description' => 'Tarjetas, navegación y controles.',
+        ],
+        'text' => [
+            'label' => 'Texto',
+            'description' => 'Color principal de lectura.',
+        ],
+        'accent' => [
+            'label' => 'Acento',
+            'description' => 'Enlaces, estados activos y foco.',
+        ],
+        'secondary' => [
+            'label' => 'Secundario',
+            'description' => 'Botones y detalles complementarios.',
+        ],
+    ];
+
+    public const THEME_PALETTE_DEFAULTS = [
+        'nebula' => [
+            'background' => '#020617',
+            'surface' => '#0f172a',
+            'text' => '#f8fafc',
+            'accent' => '#67e8f9',
+            'secondary' => '#f472b6',
+        ],
+        'sunset' => [
+            'background' => '#3f0d12',
+            'surface' => '#581c0c',
+            'text' => '#fff7ed',
+            'accent' => '#fb923c',
+            'secondary' => '#f9a8d4',
+        ],
+        'forest' => [
+            'background' => '#052e16',
+            'surface' => '#064e3b',
+            'text' => '#f0fdf4',
+            'accent' => '#4ade80',
+            'secondary' => '#2dd4bf',
+        ],
+        'arcade' => [
+            'background' => '#111827',
+            'surface' => '#1e293b',
+            'text' => '#f8fafc',
+            'accent' => '#a78bfa',
+            'secondary' => '#f472b6',
+        ],
+    ];
 
     public const THEME_PRESETS = [
         'nebula' => [
@@ -166,10 +232,12 @@ class UserSettings extends Model
         'video_scale',
         'theme',
         'emulator_background',
+        'custom_palette',
     ];
 
     protected $casts = [
         'control_config' => 'array',
+        'custom_palette' => 'array',
     ];
 
     public static function backgroundPresets(): array
@@ -182,6 +250,21 @@ class UserSettings extends Model
         return self::THEME_PRESETS;
     }
 
+    public static function themeOptions(): array
+    {
+        return array_merge(array_keys(self::THEME_PRESETS), [self::CUSTOM_THEME]);
+    }
+
+    public static function paletteFields(): array
+    {
+        return self::PALETTE_FIELDS;
+    }
+
+    public static function themePaletteDefaults(): array
+    {
+        return self::THEME_PALETTE_DEFAULTS;
+    }
+
     public static function hasEmulatorBackgroundColumn(): bool
     {
         if (self::$hasEmulatorBackgroundColumn !== null) {
@@ -189,6 +272,15 @@ class UserSettings extends Model
         }
 
         return self::$hasEmulatorBackgroundColumn = Schema::hasColumn('user_settings', 'emulator_background');
+    }
+
+    public static function hasCustomPaletteColumn(): bool
+    {
+        if (self::$hasCustomPaletteColumn !== null) {
+            return self::$hasCustomPaletteColumn;
+        }
+
+        return self::$hasCustomPaletteColumn = Schema::hasColumn('user_settings', 'custom_palette');
     }
 
     public static function settingsSelectColumns(): array
@@ -202,6 +294,10 @@ class UserSettings extends Model
 
         if (self::hasEmulatorBackgroundColumn()) {
             $columns[] = 'emulator_background';
+        }
+
+        if (self::hasCustomPaletteColumn()) {
+            $columns[] = 'custom_palette';
         }
 
         return $columns;
@@ -219,6 +315,10 @@ class UserSettings extends Model
 
         if (self::hasEmulatorBackgroundColumn() && array_key_exists('emulator_background', $preferences)) {
             $payload['emulator_background'] = $preferences['emulator_background'];
+        }
+
+        if (self::hasCustomPaletteColumn() && array_key_exists('custom_palette', $preferences)) {
+            $payload['custom_palette'] = self::sanitizeCustomPalette($preferences['custom_palette']);
         }
 
         return self::query()->updateOrCreate(
@@ -247,11 +347,110 @@ class UserSettings extends Model
     {
         $theme = $settings?->theme;
 
+        if ($theme === self::CUSTOM_THEME) {
+            return self::CUSTOM_THEME;
+        }
+
         if (! is_string($theme) || ! array_key_exists($theme, self::THEME_PRESETS)) {
             return self::DEFAULT_THEME;
         }
 
         return $theme;
+    }
+
+    public static function resolveCustomPalette(?self $settings): array
+    {
+        if (! self::hasCustomPaletteColumn()) {
+            return self::DEFAULT_CUSTOM_PALETTE;
+        }
+
+        return self::sanitizeCustomPalette($settings?->custom_palette ?? []);
+    }
+
+    public static function resolveThemeConfig(?self $settings): array
+    {
+        $theme = self::resolveTheme($settings);
+
+        if ($theme === self::CUSTOM_THEME) {
+            return self::buildThemeFromPalette(self::resolveCustomPalette($settings));
+        }
+
+        return self::THEME_PRESETS[$theme] ?? self::THEME_PRESETS[self::DEFAULT_THEME];
+    }
+
+    public static function sanitizeCustomPalette(mixed $palette): array
+    {
+        if (! is_array($palette)) {
+            $palette = [];
+        }
+
+        $sanitized = [];
+
+        foreach (self::DEFAULT_CUSTOM_PALETTE as $field => $fallback) {
+            $value = $palette[$field] ?? $fallback;
+
+            $sanitized[$field] = is_string($value) && preg_match('/^#[0-9A-Fa-f]{6}$/', $value)
+                ? strtolower($value)
+                : $fallback;
+        }
+
+        return $sanitized;
+    }
+
+    public static function buildThemeFromPalette(array $palette): array
+    {
+        $palette = self::sanitizeCustomPalette($palette);
+        $background = $palette['background'];
+        $surface = $palette['surface'];
+        $text = $palette['text'];
+        $accent = $palette['accent'];
+        $secondary = $palette['secondary'];
+
+        return [
+            'label' => 'Personalizada',
+            'shell_background' => 'radial-gradient(circle at top, '.self::rgba($accent, 0.22).', transparent 35%), linear-gradient(180deg, '.$background.' 0%, '.$surface.' 100%)',
+            'hero_background' => 'radial-gradient(circle at top right, '.self::rgba($accent, 0.16).', transparent 40%), linear-gradient(180deg, '.self::rgba($surface, 0.88).', '.self::rgba($background, 0.96).')',
+            'nav_background' => self::rgba($surface, 0.92),
+            'panel' => self::rgba($surface, 0.78),
+            'panel_strong' => self::rgba($background, 0.84),
+            'panel_soft' => self::rgba($text, 0.06),
+            'input_background' => self::rgba($background, 0.74),
+            'line' => self::rgba($text, 0.10),
+            'line_strong' => self::rgba($text, 0.18),
+            'text' => $text,
+            'muted' => 'color-mix(in srgb, '.$text.' 78%, '.$background.' 22%)',
+            'subtle' => 'color-mix(in srgb, '.$text.' 58%, '.$background.' 42%)',
+            'accent' => $accent,
+            'accent_soft' => self::rgba($accent, 0.14),
+            'accent_border' => self::rgba($accent, 0.34),
+            'accent_ring' => self::rgba($accent, 0.22),
+            'secondary' => $secondary,
+            'secondary_soft' => self::rgba($secondary, 0.12),
+            'secondary_border' => self::rgba($secondary, 0.28),
+            'secondary_ring' => self::rgba($secondary, 0.18),
+            'title_gradient' => 'linear-gradient(90deg, '.$accent.' 0%, color-mix(in srgb, '.$accent.' 58%, '.$secondary.' 42%) 52%, '.$secondary.' 100%)',
+            'button_gradient' => 'linear-gradient(90deg, '.$accent.' 0%, color-mix(in srgb, '.$accent.' 55%, '.$secondary.' 45%) 52%, '.$secondary.' 100%)',
+            'orb_primary' => 'linear-gradient(135deg, '.self::rgba($accent, 0.78).', '.self::rgba($surface, 0.72).', '.self::rgba($secondary, 0.58).')',
+            'orb_secondary' => 'linear-gradient(135deg, '.self::rgba($secondary, 0.66).', '.self::rgba($accent, 0.52).', '.self::rgba($text, 0.18).')',
+        ];
+    }
+
+    private static function rgba(string $hex, float $alpha): string
+    {
+        [$red, $green, $blue] = self::hexToRgb($hex);
+
+        return 'rgba('.$red.', '.$green.', '.$blue.', '.$alpha.')';
+    }
+
+    private static function hexToRgb(string $hex): array
+    {
+        $clean = ltrim($hex, '#');
+
+        return [
+            hexdec(substr($clean, 0, 2)),
+            hexdec(substr($clean, 2, 2)),
+            hexdec(substr($clean, 4, 2)),
+        ];
     }
 
     /**

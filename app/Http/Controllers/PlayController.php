@@ -80,7 +80,7 @@ class PlayController extends Controller
             'romUrl' => $romUrl,
             'emulatorPreferences' => UserSettings::resolveEmulatorPreferences($request->user()?->config),
             'backgroundPresets' => UserSettings::backgroundPresets(),
-            'activeTheme' => UserSettings::themePresets()[UserSettings::resolveTheme($request->user()?->config)],
+            'activeTheme' => UserSettings::resolveThemeConfig($request->user()?->config),
             'profileUrl' => route('profile.edit'),
         ]);
     }
@@ -90,6 +90,13 @@ class PlayController extends Controller
         $validated = $request->validate([
             'audio_volume' => ['required', 'integer', 'min:0', 'max:100'],
             'emulator_background' => ['required', 'string', Rule::in(array_keys(UserSettings::backgroundPresets()))],
+            'theme' => ['sometimes', 'string', Rule::in(UserSettings::themeOptions())],
+            'custom_palette' => ['nullable', 'array'],
+            'custom_palette.background' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.surface' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.text' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.accent' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.secondary' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         $settings = UserSettings::persistEmulatorPreferences($request->user()->id, $validated);
@@ -99,6 +106,8 @@ class PlayController extends Controller
             'settings' => [
                 'audio_volume' => (int) $settings->audio_volume,
                 'emulator_background' => UserSettings::resolveEmulatorPreferences($settings)['emulator_background'],
+                'theme' => UserSettings::resolveTheme($settings),
+                'custom_palette' => UserSettings::resolveCustomPalette($settings),
             ],
         ]);
     }

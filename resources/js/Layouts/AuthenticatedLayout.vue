@@ -50,7 +50,8 @@ const activeThemeKey = computed(() =>
 );
 
 const activeTheme = computed(() =>
-    themePresets.value[activeThemeKey.value]
+    page.props.auth?.user?.ui_theme_config
+        ?? themePresets.value[activeThemeKey.value]
         ?? themePresets.value.nebula
         ?? {}
 );
@@ -80,6 +81,15 @@ const themeStyle = computed(() => ({
     '--gf-button-gradient': activeTheme.value.button_gradient,
     '--gf-orb-primary': activeTheme.value.orb_primary,
     '--gf-orb-secondary': activeTheme.value.orb_secondary,
+    '--gf-success-soft': activeTheme.value.accent_soft,
+    '--gf-success-border': activeTheme.value.accent_border,
+    '--gf-success-text': activeTheme.value.accent,
+    '--gf-warning-soft': activeTheme.value.secondary_soft,
+    '--gf-warning-border': activeTheme.value.secondary_border,
+    '--gf-warning-text': activeTheme.value.secondary,
+    '--gf-danger-soft': activeTheme.value.secondary_soft,
+    '--gf-danger-border': activeTheme.value.secondary_border,
+    '--gf-danger-text': activeTheme.value.secondary,
 }));
 </script>
 

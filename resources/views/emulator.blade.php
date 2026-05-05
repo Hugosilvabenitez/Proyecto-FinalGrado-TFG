@@ -10,12 +10,19 @@
             color-scheme: dark;
             font-family: Arial, Helvetica, sans-serif;
             --page-background: {{ $backgroundPresets[$emulatorPreferences['emulator_background']]['css'] ?? $backgroundPresets['nebula']['css'] }};
+            --shell-background: {{ $activeTheme['shell_background'] ?? 'linear-gradient(180deg, #020617 0%, #0f172a 100%)' }};
             --panel: {{ $activeTheme['panel_strong'] ?? 'rgba(15, 23, 42, 0.88)' }};
             --panel-soft: {{ $activeTheme['panel'] ?? 'rgba(15, 23, 42, 0.72)' }};
+            --input-bg: {{ $activeTheme['input_background'] ?? 'rgba(2, 6, 23, 0.72)' }};
             --line: {{ $activeTheme['line'] ?? 'rgba(255, 255, 255, 0.12)' }};
+            --line-strong: {{ $activeTheme['line_strong'] ?? 'rgba(255, 255, 255, 0.18)' }};
             --muted: {{ $activeTheme['subtle'] ?? '#94a3b8' }};
             --text: {{ $activeTheme['text'] ?? '#e2e8f0' }};
             --accent: {{ $activeTheme['accent'] ?? '#67e8f9' }};
+            --accent-soft: {{ $activeTheme['accent_soft'] ?? 'rgba(34, 211, 238, 0.12)' }};
+            --accent-border: {{ $activeTheme['accent_border'] ?? 'rgba(34, 211, 238, 0.32)' }};
+            --secondary: {{ $activeTheme['secondary'] ?? '#f472b6' }};
+            --button-gradient: {{ $activeTheme['button_gradient'] ?? 'linear-gradient(90deg, #22d3ee 0%, #3b82f6 52%, #d946ef 100%)' }};
         }
 
         body {
@@ -51,241 +58,60 @@
         }
 
         .shell {
-            display: grid;
-            gap: 16px;
-            grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+            display: flex;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
-        .controls-panel,
         .emulator-panel {
             background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            box-shadow: 0 20px 80px rgba(15, 23, 42, 0.32);
-        }
-
-        .controls-panel {
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .eyebrow {
-            margin: 0 0 8px;
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-        }
-
-        .heading {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .subtle {
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 10px 0 0;
-        }
-
-        .section-title {
-            margin: 0 0 10px;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .preset-grid {
-            display: grid;
-            gap: 10px;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .preset-button {
-            background: rgba(15, 23, 42, 0.76);
-            border: 1px solid rgba(148, 163, 184, 0.18);
-            border-radius: 18px;
-            color: var(--text);
-            cursor: pointer;
-            overflow: hidden;
-            padding: 0;
-            text-align: left;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .preset-button:hover {
-            border-color: color-mix(in srgb, var(--accent) 36%, transparent);
-            transform: translateY(-1px);
-        }
-
-        .preset-button[data-active="true"] {
-            border-color: color-mix(in srgb, var(--accent) 56%, transparent);
-            box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent), 0 18px 42px rgba(8, 47, 73, 0.26);
-        }
-
-        .preset-preview {
-            aspect-ratio: 16 / 9;
             width: 100%;
-        }
-
-        .preset-content {
-            padding: 12px;
-        }
-
-        .preset-name {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .preset-meta {
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        .volume-card {
-            border: 1px solid rgba(148, 163, 184, 0.16);
-            border-radius: 20px;
-            background: var(--panel-soft);
-            padding: 16px;
-        }
-
-        .volume-row {
-            align-items: center;
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .volume-value {
-            color: var(--accent);
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        input[type="range"] {
-            width: 100%;
-        }
-
-        .status {
-            color: var(--muted);
-            font-size: 12px;
-            min-height: 18px;
         }
 
         .emulator-panel {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            min-height: calc(100vh - 40px);
-            padding: 16px;
+            min-height: 100vh;
+            padding: 0;
         }
 
         .emulator-frame-shell {
             background: var(--page-background);
-            border: 1px solid rgba(148, 163, 184, 0.14);
-            border-radius: 18px;
             flex: 1;
             min-height: 0;
             overflow: hidden;
-            padding: 10px;
+            padding: 0;
             transition: background 0.2s ease;
         }
 
         .emulator-frame {
-            background: #020617;
+            background: var(--shell-background);
             border: 0;
-            border-radius: 14px;
             display: block;
             height: 100%;
-            min-height: 560px;
+            min-height: 100vh;
             width: 100%;
-        }
-
-        .emulator-header {
-            align-items: center;
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-            padding: 4px 2px 0;
-        }
-
-        .emulator-meta {
-            color: var(--muted);
-            font-size: 13px;
         }
 
         @media (max-width: 980px) {
             .shell {
-                grid-template-columns: 1fr;
+                min-height: 100vh;
             }
 
             .emulator-panel {
-                min-height: 70vh;
+                min-height: 100vh;
             }
 
             .emulator-frame {
-                min-height: 480px;
+                min-height: 100vh;
             }
         }
     </style>
 </head>
 <body>
     @if ($emulatorReady)
-        @php($activePreset = $backgroundPresets[$emulatorPreferences['emulator_background']] ?? $backgroundPresets['nebula'])
         <div class="shell">
-            <aside class="controls-panel">
-                <section>
-                    <p class="eyebrow">Configuración aplicada</p>
-                    <h1 class="heading">{{ $rom->title }}</h1>
-                    <p class="subtle">
-                        El fondo y el volumen se cargan automáticamente desde tu perfil. Cada usuario mantiene su propia configuración sin afectar al resto.
-                    </p>
-                </section>
-
-                <section class="volume-card">
-                    <div class="volume-row">
-                        <h2 class="section-title" style="margin:0;">Fondo activo</h2>
-                        <span class="volume-value">{{ $activePreset['label'] }}</span>
-                    </div>
-                    <div class="preset-preview" style="display:block; border-radius:16px; background: {{ $activePreset['css'] }}"></div>
-                    <p class="subtle">Esta ambientación se ha cargado desde tu configuración personal.</p>
-                </section>
-
-                <section class="volume-card">
-                    <div class="volume-row">
-                        <h2 class="section-title" style="margin:0;">Volumen</h2>
-                        <span class="volume-value">{{ $emulatorPreferences['audio_volume'] }}%</span>
-                    </div>
-                    <p class="subtle">El valor guardado en tu perfil se aplica al juego cuando termina de cargar.</p>
-                </section>
-
-                <a
-                    href="{{ $profileUrl }}"
-                    style="display:inline-flex; align-items:center; justify-content:center; min-height:48px; border-radius:18px; border:1px solid rgba(103, 232, 249, 0.24); background: rgba(34, 211, 238, 0.12); color:#cffafe; font-weight:700; text-decoration:none;"
-                >
-                    Abrir Mi perfil
-                </a>
-            </aside>
-
             <section class="emulator-panel">
-                <div class="emulator-header">
-                    <div>
-                        <p class="eyebrow" style="margin-bottom:4px;">Emulador</p>
-                        <p style="margin:0; font-size:20px; font-weight:700;">Sesión lista</p>
-                    </div>
-                    <p class="emulator-meta">Preferencias cargadas desde Mi perfil</p>
-                </div>
-
                 <div class="emulator-frame-shell" id="emulator-frame-shell">
                     <iframe
                         id="emulator-frame"
@@ -300,6 +126,7 @@
         <script>
             const backgroundPresets = @json($backgroundPresets);
             const currentPreferences = @json($emulatorPreferences);
+            const activeTheme = @json($activeTheme);
 
             const frame = document.getElementById('emulator-frame');
             const frameShell = document.getElementById('emulator-frame-shell');
@@ -340,6 +167,120 @@
                 }
             }
 
+            function applyThemeToFrame() {
+                try {
+                    const childDocument = frame.contentDocument;
+
+                    if (!childDocument) {
+                        return;
+                    }
+
+                    const childRoot = childDocument.documentElement;
+                    const childBody = childDocument.body;
+                    const themeVariables = {
+                        '--panel': activeTheme.panel_strong,
+                        '--panel-soft': activeTheme.panel,
+                        '--line': activeTheme.line,
+                        '--text': activeTheme.text,
+                        '--muted': activeTheme.subtle,
+                        '--accent': activeTheme.accent,
+                        '--gf-shell-bg': activeTheme.shell_background,
+                        '--gf-input-bg': activeTheme.input_background,
+                        '--gf-accent-soft': activeTheme.accent_soft,
+                        '--gf-accent-border': activeTheme.accent_border,
+                        '--gf-secondary': activeTheme.secondary,
+                        '--gf-button-gradient': activeTheme.button_gradient,
+                    };
+
+                    Object.entries(themeVariables).forEach(([property, value]) => {
+                        if (value) {
+                            childRoot.style.setProperty(property, value);
+                        }
+                    });
+
+                    if (childBody) {
+                        childBody.style.background = activeTheme.shell_background;
+                        childBody.style.color = activeTheme.text;
+                    }
+
+                    let overrideStyle = childDocument.getElementById('gameflux-theme-overrides');
+
+                    if (!overrideStyle) {
+                        overrideStyle = childDocument.createElement('style');
+                        overrideStyle.id = 'gameflux-theme-overrides';
+                        childDocument.head.appendChild(overrideStyle);
+                    }
+
+                    overrideStyle.textContent = `
+                        body {
+                            background: var(--gf-shell-bg) !important;
+                            color: var(--text) !important;
+                        }
+
+                        .emulator-header,
+                        .panel,
+                        #controls,
+                        #gameinfo,
+                        #instructions {
+                            background: var(--panel) !important;
+                            border-color: var(--line) !important;
+                            color: var(--text) !important;
+                        }
+
+                        .screen-panel {
+                            background: linear-gradient(180deg, var(--panel), var(--gf-input-bg)) !important;
+                        }
+
+                        .screen-frame {
+                            border-color: var(--line) !important;
+                            box-shadow: inset 0 0 0 5px var(--gf-input-bg), 0 24px 70px rgba(0, 0, 0, 0.42) !important;
+                        }
+
+                        #controls button,
+                        #controls label,
+                        #sound,
+                        #mapping td {
+                            background: var(--panel-soft) !important;
+                            border-color: var(--line) !important;
+                            color: var(--text) !important;
+                        }
+
+                        #controls button:hover,
+                        #controls label:hover,
+                        #sound:hover {
+                            border-color: var(--gf-accent-border) !important;
+                            color: var(--accent) !important;
+                        }
+
+                        #controls .bigbutton {
+                            background: var(--gf-accent-soft) !important;
+                            border-color: var(--gf-accent-border) !important;
+                            color: var(--accent) !important;
+                        }
+
+                        #mapping td:first-child,
+                        #openDebug,
+                        a:link,
+                        a:visited {
+                            color: var(--accent) !important;
+                        }
+
+                        #gameinfo p,
+                        #instructions p,
+                        .emulator-status,
+                        footer {
+                            color: var(--muted) !important;
+                        }
+
+                        input[type="range"] {
+                            accent-color: var(--gf-secondary);
+                        }
+                    `;
+                } catch (error) {
+                    console.warn('No se pudo aplicar la paleta al emulador embebido.', error);
+                }
+            }
+
             function applyVolume(volume) {
                 const normalized = normalizeVolume(volume);
 
@@ -372,6 +313,7 @@
 
             function syncPreferencesToFrame() {
                 applyBackground(currentPreferences.emulator_background);
+                applyThemeToFrame();
                 applyVolume(currentPreferences.audio_volume);
             }
 

@@ -30,6 +30,10 @@ class ProfileController extends Controller
             'supportsEmulatorBackground' => UserSettings::hasEmulatorBackgroundColumn(),
             'themePresets' => UserSettings::themePresets(),
             'selectedTheme' => UserSettings::resolveTheme($request->user()->config),
+            'customPalette' => UserSettings::resolveCustomPalette($request->user()->config),
+            'paletteFields' => UserSettings::paletteFields(),
+            'themePaletteDefaults' => UserSettings::themePaletteDefaults(),
+            'customThemeKey' => UserSettings::CUSTOM_THEME,
         ]);
     }
 
@@ -56,8 +60,14 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'audio_volume' => ['required', 'integer', 'min:0', 'max:100'],
-            'theme' => ['required', 'string', Rule::in(array_keys(UserSettings::themePresets()))],
+            'theme' => ['sometimes', 'string', Rule::in(UserSettings::themeOptions())],
             'emulator_background' => ['required', 'string', Rule::in(array_keys(UserSettings::backgroundPresets()))],
+            'custom_palette' => ['nullable', 'array'],
+            'custom_palette.background' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.surface' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.text' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.accent' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'custom_palette.secondary' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         UserSettings::persistEmulatorPreferences($request->user()->id, $validated);

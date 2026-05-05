@@ -22,9 +22,6 @@ class PostController extends Controller
 
         return inertia('Blog/Index', [
             'posts' => $posts,
-            'auth' => [
-                'user' => auth()->user()
-            ]
         ]);
     }
 

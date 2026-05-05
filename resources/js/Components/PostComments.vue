@@ -80,7 +80,8 @@ const orderedComments = computed(() => comments.value);
                     <img
                         :src="avatarFromUser(comment.user)"
                         alt="Avatar"
-                        class="h-9 w-9 rounded-full border border-white/10 object-cover shrink-0"
+                        class="h-9 w-9 rounded-full border object-cover shrink-0"
+                        :style="{ borderColor: 'var(--gf-line)' }"
                     />
 
                     <div class="min-w-0 flex-1">
@@ -89,7 +90,7 @@ const orderedComments = computed(() => comments.value);
                                 {{ firstName(comment.user?.name) }}
                             </p>
 
-                            <button v-if="canDeleteComment()" @click="deleteComment(comment.id)" class="text-xs font-semibold text-red-300 hover:text-red-200 transition px-2 py-1 rounded-lg border border-red-500/20 hover:bg-red-500/10 hover:border-red-400/40 hover:shadow-[0_0_15px_rgba(239,68,68,0.25)] mt-1">
+                            <button v-if="canDeleteComment()" @click="deleteComment(comment.id)" class="gf-action-danger mt-1 rounded-lg px-2 py-1 text-xs font-semibold transition">
                                 Eliminar
                             </button>
 

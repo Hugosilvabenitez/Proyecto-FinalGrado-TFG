@@ -26,10 +26,6 @@ defineProps({
         type: Object,
         default: () => ({}),
     },
-    backgroundPresets: {
-        type: Object,
-        default: () => ({}),
-    },
     themePresets: {
         type: Object,
         default: () => ({}),
@@ -38,9 +34,21 @@ defineProps({
         type: String,
         default: 'nebula',
     },
-    supportsEmulatorBackground: {
-        type: Boolean,
-        default: false,
+    customPalette: {
+        type: Object,
+        default: () => ({}),
+    },
+    paletteFields: {
+        type: Object,
+        default: () => ({}),
+    },
+    themePaletteDefaults: {
+        type: Object,
+        default: () => ({}),
+    },
+    customThemeKey: {
+        type: String,
+        default: 'custom',
     },
 });
 
@@ -79,11 +87,13 @@ defineOptions({
 
                 <div class="gf-panel rounded-3xl p-6 backdrop-blur-2xl sm:p-8">
                     <UpdateEmulatorPreferencesForm
-                        :background-presets="backgroundPresets"
                         :emulator-preferences="emulatorPreferences"
                         :theme-presets="themePresets"
                         :selected-theme="selectedTheme"
-                        :supports-emulator-background="supportsEmulatorBackground"
+                        :custom-palette="customPalette"
+                        :palette-fields="paletteFields"
+                        :theme-palette-defaults="themePaletteDefaults"
+                        :custom-theme-key="customThemeKey"
                         :status="status"
                     />
                 </div>
