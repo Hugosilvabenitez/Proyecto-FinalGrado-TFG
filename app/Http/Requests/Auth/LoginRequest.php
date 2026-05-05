@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+/**
+* Class LoginRequest (FormRequest)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This request validates login credentials and applies authentication rate limiting.
+*/
 class LoginRequest extends FormRequest
 {
     /**

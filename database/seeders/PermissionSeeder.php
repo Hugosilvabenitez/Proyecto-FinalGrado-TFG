@@ -4,6 +4,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+* Class PermissionSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder populates the permissions table with the default access rules.
+*/
 class PermissionSeeder extends Seeder
 {
     public function run(): void

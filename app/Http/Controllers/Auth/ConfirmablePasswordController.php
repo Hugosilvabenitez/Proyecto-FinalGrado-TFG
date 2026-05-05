@@ -10,6 +10,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class ConfirmablePasswordController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class handles password confirmation for sensitive authenticated actions.
+*/
 class ConfirmablePasswordController extends Controller
 {
     /**

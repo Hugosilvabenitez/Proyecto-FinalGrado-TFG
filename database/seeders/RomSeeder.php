@@ -5,6 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+* Class RomSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder populates the ROM catalog with the default games.
+*/
 class RomSeeder extends Seeder
 {
     public function run(): void

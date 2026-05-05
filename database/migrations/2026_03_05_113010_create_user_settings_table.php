@@ -3,6 +3,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+* Class CreateUserSettingsTable (Migration)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This migration creates the user settings table for emulator and interface preferences.
+*/
 return new class extends Migration
 {
     public function up(): void

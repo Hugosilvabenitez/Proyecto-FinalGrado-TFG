@@ -3,6 +3,14 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 
 
+/**
+* Class AchievementController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class loads the authenticated user's achievements and prepares them for the achievements view.
+*/
 class AchievementController extends Controller
 {
     public function index()

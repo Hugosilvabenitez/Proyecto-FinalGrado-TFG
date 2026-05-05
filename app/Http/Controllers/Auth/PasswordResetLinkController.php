@@ -10,6 +10,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class PasswordResetLinkController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class shows the forgot password form and sends reset links by email.
+*/
 class PasswordResetLinkController extends Controller
 {
     /**

@@ -12,6 +12,14 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+* Class PlayController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class manages the game catalog, emulator launch flow, and user emulator preferences.
+*/
 class PlayController extends Controller
 {
     public function index(Request $request): Response

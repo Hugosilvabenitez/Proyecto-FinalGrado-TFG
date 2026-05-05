@@ -14,6 +14,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class RegisteredUserController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class renders the registration view and creates new user accounts.
+*/
 class RegisteredUserController extends Controller
 {
     /**

@@ -13,6 +13,14 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class ProfileController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class manages the profile screen, account updates, and emulator preference settings.
+*/
 class ProfileController extends Controller
 {
     /**

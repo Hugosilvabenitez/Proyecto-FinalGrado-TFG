@@ -6,6 +6,14 @@ use App\Models\UserSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
+/**
+* Class HandleInertiaRequests (Middleware)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class shares authenticated user preferences and UI theme data with all Inertia views.
+*/
 class HandleInertiaRequests extends Middleware
 {
     /**

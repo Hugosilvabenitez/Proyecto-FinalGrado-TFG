@@ -5,6 +5,14 @@ use App\Models\User;
 use App\Models\Achievement;
 use App\Events\AchievementUnlocked;
 
+/**
+* Class AchievementService (Service)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This service evaluates achievement requirements and unlocks them for the user when conditions are met.
+*/
 class AchievementService
 {
     public function check(User $user, string $type): array
