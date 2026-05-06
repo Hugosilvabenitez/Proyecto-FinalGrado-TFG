@@ -7,6 +7,14 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 
+/**
+* Class VerifyEmailController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class confirms signed email verification requests for authenticated users.
+*/
 class VerifyEmailController extends Controller
 {
     /**

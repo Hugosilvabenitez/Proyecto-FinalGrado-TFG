@@ -5,6 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+* Class RomSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder populates the ROM catalog with the default games.
+*/
 class RomSeeder extends Seeder
 {
     public function run(): void
@@ -28,20 +36,6 @@ class RomSeeder extends Seeder
                 'slug' => 'advance-wars',
                 'description' => 'Estrategia por turnos ideal para un catalogo variado y partidas tacticas.',
                 'file_path' => 'roms/advance-wars.gba',
-                'cover_image' => null,
-                'size_bytes' => null,
-                'region' => 'USA',
-                'emulator_id' => $emulatorId,
-                'uploaded_by' => null,
-                'is_public' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Advance Wars 2: Black Hole Rising',
-                'slug' => 'advance-wars-2-black-hole-rising',
-                'description' => 'Secuela muy solida para quienes quieran engancharse mas horas al sistema.',
-                'file_path' => 'roms/advance-wars-2-black-hole-rising.gba',
                 'cover_image' => null,
                 'size_bytes' => null,
                 'region' => 'USA',
@@ -242,20 +236,6 @@ class RomSeeder extends Seeder
                 'size_bytes' => null,
                 'region' => 'USA',
                 'emulator_id' => $emulatorId,
-                'uploaded_by' => null,
-                'is_public' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Yoshi\'s Island: Super Mario Advance 3',
-                'slug' => 'yoshis-island-super-mario-advance-3',
-                'description' => 'Plataformas accesible y muy vistoso para completar la seleccion de 15.',
-                'file_path' => 'roms/yoshis-island-super-mario-advance-3.gba',
-                'cover_image' => null,
-                'size_bytes' => null,
-                'region' => 'USA',
-                'emulator_id' => 1,
                 'uploaded_by' => null,
                 'is_public' => true,
                 'created_at' => now(),

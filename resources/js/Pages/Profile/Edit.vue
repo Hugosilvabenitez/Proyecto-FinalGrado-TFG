@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
+import UpdateEmulatorPreferencesForm from './Partials/UpdateEmulatorPreferencesForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
@@ -21,6 +22,34 @@ defineProps({
     status: {
         type: String,
     },
+    emulatorPreferences: {
+        type: Object,
+        default: () => ({}),
+    },
+    themePresets: {
+        type: Object,
+        default: () => ({}),
+    },
+    selectedTheme: {
+        type: String,
+        default: 'nebula',
+    },
+    customPalette: {
+        type: Object,
+        default: () => ({}),
+    },
+    paletteFields: {
+        type: Object,
+        default: () => ({}),
+    },
+    themePaletteDefaults: {
+        type: Object,
+        default: () => ({}),
+    },
+    customThemeKey: {
+        type: String,
+        default: 'custom',
+    },
 });
 
 defineOptions({
@@ -33,30 +62,43 @@ defineOptions({
         <template>
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-500 bg-clip-text text-transparent tracking-tight">
+                    <h2 class="gf-title-gradient text-xl font-semibold leading-tight tracking-tight">
                         Configuración de perfil
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">
+                    <p class="gf-text-subtle mt-1 text-xs">
                         Gestiona tu identidad y seguridad dentro de GameFlux.
                     </p>
                 </div>
             </div>
         </template>
 
-        <div class="py-10 px-4 sm:px-6 lg:px-8">
+        <div class="gf-page px-4 py-10 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-5xl space-y-8">
-                <div class="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-2xl shadow-[0_0_35px_rgba(15,23,42,0.9)] p-6 sm:p-8">
+                <div class="gf-panel rounded-3xl p-6 backdrop-blur-2xl sm:p-8">
                     <UpdateProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
                     />
                 </div>
 
-                <div class="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-2xl shadow-[0_0_35px_rgba(15,23,42,0.9)] p-6 sm:p-8">
+                <div class="gf-panel rounded-3xl p-6 backdrop-blur-2xl sm:p-8">
                     <UpdatePasswordForm />
                 </div>
 
-                <div class="rounded-3xl border border-red-500/20 bg-slate-950/90 backdrop-blur-2xl shadow-[0_0_40px_rgba(127,29,29,0.6)] p-6 sm:p-8">
+                <div class="gf-panel rounded-3xl p-6 backdrop-blur-2xl sm:p-8">
+                    <UpdateEmulatorPreferencesForm
+                        :emulator-preferences="emulatorPreferences"
+                        :theme-presets="themePresets"
+                        :selected-theme="selectedTheme"
+                        :custom-palette="customPalette"
+                        :palette-fields="paletteFields"
+                        :theme-palette-defaults="themePaletteDefaults"
+                        :custom-theme-key="customThemeKey"
+                        :status="status"
+                    />
+                </div>
+
+                <div class="gf-panel-strong rounded-3xl p-6 backdrop-blur-2xl sm:p-8">
                     <DeleteUserForm />
                 </div>
             </div>

@@ -5,6 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+/**
+* Class UserSettingSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder populates the user settings table with default preference records.
+*/
 class UserSettingSeeder extends Seeder
 {
     /**

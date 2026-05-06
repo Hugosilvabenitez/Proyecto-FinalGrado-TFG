@@ -43,9 +43,6 @@ class DashboardController extends Controller
             ->values();
 
         return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => $user
-            ],
             'savedGames' => $savedGames,
         ]);
     }

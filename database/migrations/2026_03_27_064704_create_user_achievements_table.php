@@ -4,6 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+* Class CreateUserAchievementsTable (Migration)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This migration creates the pivot table that stores unlocked achievements per user.
+*/
 return new class extends Migration
 {
     /**

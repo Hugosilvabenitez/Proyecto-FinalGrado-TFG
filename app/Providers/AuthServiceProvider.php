@@ -5,6 +5,14 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
+/**
+* Class AuthServiceProvider (ServiceProvider)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This provider registers the application's authorization gates and policies.
+*/
 class AuthServiceProvider extends ServiceProvider
 {
     public function boot(): void

@@ -2,6 +2,14 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+/**
+* Class CreateRomsTable (Migration)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This migration creates the ROM catalog table for the available games.
+*/
 return new class extends Migration
 {
     public function up(): void

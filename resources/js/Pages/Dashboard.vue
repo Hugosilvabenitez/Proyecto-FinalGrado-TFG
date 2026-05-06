@@ -48,7 +48,7 @@ const recommendations = [
         title: 'The Legend of Zelda: The Minish Cap',
         subtitle: 'Aventura, mazmorras y magia',
         href: route('play', { game: 'the-legend-of-zelda-the-minish-cap' }),
-        borderClass: 'hover:border-emerald-400/60 hover:shadow-[0_0_20px_rgba(52,211,153,0.38)]',
+        hoverClass: 'gf-panel-hover-accent',
         image: svgToDataUri(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
                 <defs>
@@ -82,7 +82,7 @@ const recommendations = [
         title: 'Mario Kart: Super Circuit',
         subtitle: 'Carreras arcade a toda velocidad',
         href: route('play', { game: 'mario-kart-super-circuit' }),
-        borderClass: 'hover:border-red-400/60 hover:shadow-[0_0_20px_rgba(248,113,113,0.38)]',
+        hoverClass: 'gf-panel-hover-secondary',
         image: svgToDataUri(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
                 <defs>
@@ -136,29 +136,27 @@ defineOptions({
 <template>
     <Head title="Dashboard · GameFlux" />
 
-    <div class="min-h-screen overflow-x-hidden bg-slate-950 text-slate-100 relative">
+    <div class="gf-page relative min-h-screen overflow-x-hidden">
         <div class="pointer-events-none absolute inset-0">
-            <div class="absolute -top-32 -left-24 h-72 w-72 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 opacity-40 blur-3xl"></div>
-            <div class="absolute -bottom-40 -right-20 h-80 w-80 bg-gradient-to-tr from-fuchsia-500 via-orange-400 to-yellow-300 opacity-40 blur-3xl"></div>
+            <div class="gf-page-orb-primary absolute -top-32 -left-24 h-72 w-72"></div>
+            <div class="gf-page-orb-secondary absolute -bottom-40 -right-20 h-80 w-80"></div>
         </div>
 
-        <div
-            class="pointer-events-none absolute inset-0 opacity-30 mix-blend-soft-light"
-            style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%221%22 height=%221%22 fill=%22%23ffffff%22 opacity=%220.12%22/></svg>');"
-        ></div>
+        <div class="gf-page-grid pointer-events-none absolute inset-0"></div>
 
         <div class="relative z-10 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-            <div class="mx-auto mb-12 w-full max-w-2xl">
+            <div class="gf-panel-hero mx-auto mb-12 w-full max-w-2xl rounded-[2rem] p-8 text-center backdrop-blur-2xl sm:p-10">
                 <div class="mb-8 flex flex-col items-center">
                     <img
                         :src="props.auth?.user?.avatar_url"
                         alt="Avatar"
-                        class="mb-4 h-20 w-20 rounded-full border-4 border-white/20 shadow-[0_0_25px_rgba(59,130,246,0.75)] object-cover"
+                        class="mb-4 h-20 w-20 rounded-full border-4 object-cover"
+                        :style="{ borderColor: 'var(--gf-line-strong)', boxShadow: '0 0 25px var(--gf-accent-soft)' }"
                     />
-                    <h1 class="mb-2 text-center text-2xl font-semibold tracking-tight text-slate-100">
+                    <h1 class="mb-2 text-center text-2xl font-semibold tracking-tight">
                         ¡Hola, {{ firstName }}!
                     </h1>
-                    <p class="text-center text-sm text-slate-300">
+                    <p class="gf-text-muted text-center text-sm">
                         Tu portal de emulación Game Boy Advance
                     </p>
                 </div>
@@ -166,22 +164,16 @@ defineOptions({
                 <div class="flex flex-col justify-center gap-3 sm:flex-row">
                     <Link
                         :href="route('play')"
-                        class="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-[0_0_25px_rgba(56,189,248,0.9)] transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(244,114,182,0.9)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                        class="gf- button-primary w-full rounded-2xl px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-all disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
                         Nueva partida
                     </Link>
-
-                    <button
-                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm text-slate-300 backdrop-blur-2xl transition-all hover:border-cyan-400/60 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(56,189,248,0.6)] sm:w-auto"
-                    >
-                        Mis favoritos
-                    </button>
                 </div>
             </div>
 
             <div class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div class="rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-[0_0_40px_rgba(15,23,42,0.9)] backdrop-blur-2xl transition duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/60 hover:shadow-[0_0_60px_rgba(56,189,248,0.8)]">
-                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.6)]">
+                <div class="gf-panel-soft gf-panel-hover-accent rounded-3xl p-6 text-center backdrop-blur-2xl">
+                    <div class="gf-surface-accent mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                         <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 fill-rule="evenodd"
@@ -190,13 +182,13 @@ defineOptions({
                             />
                         </svg>
                     </div>
-                    <p class="mb-2 text-xs uppercase tracking-wide text-slate-400">Partidas guardadas</p>
-                    <p class="text-3xl font-bold text-slate-100">{{ stats.cloud_saves }}</p>
-                    <p class="mt-1 text-xs text-slate-500">En la nube</p>
+                    <p class="gf-text-subtle mb-2 text-xs uppercase tracking-wide">Partidas guardadas</p>
+                    <p class="text-3xl font-bold">{{ stats.cloud_saves }}</p>
+                    <p class="gf-text-subtle mt-1 text-xs">En la nube</p>
                 </div>
 
-                <div class="rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-[0_0_40px_rgba(15,23,42,0.9)] backdrop-blur-2xl transition duration-500 ease-out hover:-translate-y-1 hover:border-fuchsia-400/60 hover:shadow-[0_0_60px_rgba(244,114,182,0.8)]">
-                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-[0_0_20px_rgba(168,85,247,0.6)]">
+                <div class="gf-panel-soft gf-panel-hover-secondary rounded-3xl p-6 text-center backdrop-blur-2xl">
+                    <div class="gf-surface-secondary mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                         <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 fill-rule="evenodd"
@@ -205,29 +197,29 @@ defineOptions({
                             />
                         </svg>
                     </div>
-                    <p class="mb-2 text-xs uppercase tracking-wide text-slate-400">Horas jugadas</p>
-                    <p class="text-3xl font-bold text-slate-100">{{ formattedTime }}</p>
-                    <p class="mt-1 text-xs text-slate-500">Total emulador</p>
+                    <p class="gf-text-subtle mb-2 text-xs uppercase tracking-wide">Horas jugadas</p>
+                    <p class="text-3xl font-bold">{{ formattedTime }}</p>
+                    <p class="gf-text-subtle mt-1 text-xs">Total emulador</p>
                 </div>
 
-                <div class="rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-[0_0_40px_rgba(15,23,42,0.9)] backdrop-blur-2xl transition duration-500 ease-out hover:-translate-y-1 hover:border-orange-400/60 hover:shadow-[0_0_60px_rgba(251,146,60,0.8)]">
-                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 shadow-[0_0_20px_rgba(251,191,36,0.6)]">
+                <div class="gf-panel-soft gf-panel-hover-accent rounded-3xl p-6 text-center backdrop-blur-2xl">
+                    <div class="gf-surface-mixed mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                         <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
                             />
                         </svg>
                     </div>
-                    <p class="mb-2 text-xs uppercase tracking-wide text-slate-400">Logros</p>
-                    <p class="text-3xl font-bold text-slate-100">{{ stats.achievements_unlocked }}</p>
-                    <p class="mt-1 text-xs text-slate-500">De 6 totales</p>
+                    <p class="gf-text-subtle mb-2 text-xs uppercase tracking-wide">Logros</p>
+                    <p class="text-3xl font-bold">{{ stats.achievements_unlocked }}</p>
+                    <p class="gf-text-subtle mt-1 text-xs">De 6 totales</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                <div class="w-full rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_0_40px_rgba(15,23,42,0.9)] backdrop-blur-2xl min-w-0">
+                <div class="gf-panel w-full min-w-0 rounded-3xl p-8 backdrop-blur-2xl">
                     <h2 class="mb-6 flex items-center gap-3 text-2xl font-semibold tracking-tight">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg">
+                        <div class="gf-surface-accent flex h-10 w-10 items-center justify-center rounded-2xl">
                             <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     fill-rule="evenodd"
@@ -244,7 +236,7 @@ defineOptions({
                             v-for="save in savedGames"
                             :key="save.id"
                             :href="save.rom.play_url"
-                            class="flex min-w-0 items-center gap-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 no-underline transition-all hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+                            class="gf-panel-strong gf-panel-hover-accent flex min-w-0 items-center gap-4 rounded-2xl p-4 no-underline transition-all"
                         >
                             <div class="flex h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
                                 <img
@@ -259,34 +251,34 @@ defineOptions({
                             </div>
 
                             <div class="min-w-0 flex-1">
-                                <p class="truncate font-semibold text-slate-200">{{ save.rom.title }}</p>
-                                <p class="truncate text-sm text-slate-400">{{ save.save_name }}</p>
-                                <p class="truncate text-xs text-slate-500">Guardada: {{ formatSavedAt(save.updated_at) }}</p>
+                                <p class="truncate font-semibold">{{ save.rom.title }}</p>
+                                <p class="gf-text-muted truncate text-sm">{{ save.save_name }}</p>
+                                <p class="gf-text-subtle truncate text-xs">Guardada: {{ formatSavedAt(save.updated_at) }}</p>
                             </div>
 
-                            <div class="shrink-0 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-xs font-semibold text-white shadow-lg transition-transform hover:scale-105">
+                            <div class="gf-chip-success shrink-0 rounded-xl px-4 py-2 text-xs font-semibold transition-transform hover:scale-105">
                                 Continuar
                             </div>
                         </Link>
                     </div>
 
-                    <div v-else class="rounded-2xl border border-dashed border-slate-700/70 bg-slate-900/40 p-6 text-center">
-                        <p class="text-sm font-semibold text-slate-200">Todavía no hay partidas guardadas</p>
-                        <p class="mt-2 text-sm leading-6 text-slate-400">
+                    <div v-else class="gf-panel-strong rounded-2xl border-dashed p-6 text-center">
+                        <p class="text-sm font-semibold">Todavía no hay partidas guardadas</p>
+                        <p class="gf-text-muted mt-2 text-sm leading-6">
                             Cuando guardes una partida desde el emulador aparecerá aquí para continuarla rápido.
                         </p>
                         <Link
                             :href="route('play')"
-                            class="mt-4 inline-flex rounded-xl bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cyan-200 transition hover:bg-cyan-400/15"
+                            class="gf-chip-accent mt-4 inline-flex rounded-xl px-4 py-2 text-xs font-semibold uppercase tracking-wide transition"
                         >
                             Ir al catálogo
                         </Link>
                     </div>
                 </div>
 
-                <div class="w-full rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_0_40px_rgba(15,23,42,0.9)] backdrop-blur-2xl min-w-0">
+                <div class="gf-panel w-full min-w-0 rounded-3xl p-8 backdrop-blur-2xl">
                     <h2 class="mb-6 flex items-center gap-3 text-2xl font-semibold tracking-tight">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 to-purple-600 shadow-lg">
+                        <div class="gf-surface-secondary flex h-10 w-10 items-center justify-center rounded-2xl">
                             <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -299,8 +291,8 @@ defineOptions({
                             v-for="game in recommendations"
                             :key="game.title"
                             :href="game.href"
-                            class="group rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 no-underline transition-all min-w-0"
-                            :class="game.borderClass"
+                            class="gf-panel-strong group min-w-0 rounded-2xl p-4 no-underline transition-all"
+                            :class="game.hoverClass"
                         >
                             <div class="mb-3 h-28 w-full overflow-hidden rounded-xl bg-slate-950 shadow-lg transition-transform group-hover:scale-[1.02]">
                                 <img
@@ -309,8 +301,8 @@ defineOptions({
                                     class="h-full w-full object-cover"
                                 />
                             </div>
-                            <p class="truncate text-sm font-semibold text-slate-200">{{ game.title }}</p>
-                            <p class="truncate text-xs text-slate-500 mt-1">{{ game.subtitle }}</p>
+                            <p class="truncate text-sm font-semibold">{{ game.title }}</p>
+                            <p class="gf-text-subtle mt-1 truncate text-xs">{{ game.subtitle }}</p>
                         </Link>
                     </div>
                 </div>

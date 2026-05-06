@@ -4,6 +4,14 @@ namespace App\Notifications\Auth;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+* Class ResetPasswordNotification (Notification)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This notification customizes the password reset email sent to the user.
+*/
 class ResetPasswordNotification extends ResetPassword
 {
     public function toMail($notifiable)

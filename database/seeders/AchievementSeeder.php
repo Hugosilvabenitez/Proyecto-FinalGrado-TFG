@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\DB;
 
 use function Symfony\Component\Clock\now;
 
+/**
+* Class AchievementSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder populates the achievements table with the platform's default achievements.
+*/
 class AchievementSeeder extends Seeder
 {
     public function run(): void

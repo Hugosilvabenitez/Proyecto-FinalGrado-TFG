@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use Inertia\Inertia;
 
+/**
+* Class RolController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class manages role listing, creation, edition, and deletion within the application.
+*/
 class RolController extends Controller
 {
     public function index()
