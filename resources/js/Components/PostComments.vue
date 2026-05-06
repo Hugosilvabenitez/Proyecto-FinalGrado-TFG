@@ -1,21 +1,14 @@
-<!--
-Comments Component (View)
-
-@author Miguel Gordon Jiménez <mgorjim1003@g.educaand.es>
-@date 2026-04-05
-
-This file contains all the necessary lines for the Comment's Component.
--->
-
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     post: {
         type: Object,
         required: true,
     },
+    auth: Object,
 });
 
 const comments = ref(props.post.comments ? [...props.post.comments] : []);
@@ -32,10 +25,22 @@ const avatarFromUser = (user) => {
 
 const firstName = (name) => name?.split(' ')[0] || 'Trainer';
 
-const normalizeComment = (comment) => ({
-    ...comment,
-    user: comment.user || null,
-});
+const canDeleteComment = () => {
+    return props.auth?.user?.roles?.some(r =>
+        ['admin', 'moderator'].includes(r.name.toLowerCase())
+    );
+};
+
+const deleteComment = (id) => {
+    if (!confirm('¿Eliminar este comentario?')) return;
+
+    router.delete(`/comments/${id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            comments.value = comments.value.filter(c => c.id !== id);
+        },
+    });
+};
 
 const submit = () => {
     if (!form.content.trim()) return;
@@ -49,11 +54,9 @@ const submit = () => {
 };
 
 onMounted(() => {
-    if (!props.post?.id || !window.Echo) return;
-
     window.Echo.channel(`post.${props.post.id}`)
-        .listen('CommentCreated', (e) => {
-            comments.value.push(normalizeComment(e.comment));
+        .listen('.CommentCreated', (e) => {
+            comments.value.push(e.comment);
         });
 });
 
@@ -67,27 +70,33 @@ const orderedComments = computed(() => comments.value);
 
 <template>
     <div class="mt-4 space-y-4">
+
         <div class="space-y-2 max-h-56 overflow-y-auto pr-1">
             <div
                 v-for="comment in orderedComments"
                 :key="comment.id"
-                class="rounded-2xl border border-white/10 bg-slate-950/60 p-3"
-            >
+                class="gf-panel-strong rounded-2xl p-3">
                 <div class="flex items-start gap-3">
                     <img
                         :src="avatarFromUser(comment.user)"
                         alt="Avatar"
-                        class="h-9 w-9 rounded-full border border-white/10 object-cover shrink-0"
+                        class="h-9 w-9 rounded-full border object-cover shrink-0"
+                        :style="{ borderColor: 'var(--gf-line)' }"
                     />
 
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between gap-3">
-                            <p class="text-sm font-semibold text-cyan-300 truncate">
+                            <p class="gf-text-accent truncate text-sm font-semibold">
                                 {{ firstName(comment.user?.name) }}
                             </p>
+
+                            <button v-if="canDeleteComment()" @click="deleteComment(comment.id)" class="gf-action-danger mt-1 rounded-lg px-2 py-1 text-xs font-semibold transition">
+                                Eliminar
+                            </button>
+
                         </div>
 
-                        <p class="mt-1 text-sm text-slate-200 leading-6">
+                        <p class="gf-text-muted mt-1 text-sm leading-6">
                             {{ comment.content }}
                         </p>
                     </div>
@@ -100,13 +109,13 @@ const orderedComments = computed(() => comments.value);
                 v-model="form.content"
                 type="text"
                 placeholder="Escribe un comentario..."
-                class="flex-1 rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+                class="gf-input flex-1 rounded-2xl px-4 py-3 text-sm transition"
             />
 
             <button
                 type="submit"
                 :disabled="form.processing"
-                class="rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_0_18px_rgba(56,189,248,0.6)] transition hover:shadow-[0_0_26px_rgba(244,114,182,0.75)] disabled:cursor-not-allowed disabled:opacity-50"
+                class="gf-button-primary rounded-2xl px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
             >
                 Enviar
             </button>

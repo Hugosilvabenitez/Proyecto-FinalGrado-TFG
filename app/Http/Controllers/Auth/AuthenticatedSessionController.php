@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class AuthenticatedSessionController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class manages the login form, user authentication, and session logout flow.
+*/
 class AuthenticatedSessionController extends Controller
 {
     /**

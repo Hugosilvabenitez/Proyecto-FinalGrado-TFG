@@ -36,7 +36,20 @@ class CommentController extends Controller
 
         $comment->load('user');
 
-        broadcast(new CommentCreated($comment))->toOthers();
+        broadcast(new CommentCreated($comment));
+
+        return back();
+    }
+
+    public function destroy(Comment $comment)
+    {
+        $user = auth()->user();
+
+        if (!($user->hasRole('Admin') || $user->hasRole('Moderator'))) {
+            abort(403, 'No autorizado');
+        }
+
+        $comment->delete();
 
         return back();
     }

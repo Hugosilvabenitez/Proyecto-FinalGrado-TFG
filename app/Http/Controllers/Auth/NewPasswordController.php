@@ -14,6 +14,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+* Class NewPasswordController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class renders the password reset view and stores the new password provided by the user.
+*/
 class NewPasswordController extends Controller
 {
     /**

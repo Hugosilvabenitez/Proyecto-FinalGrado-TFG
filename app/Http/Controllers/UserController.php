@@ -7,6 +7,14 @@ use App\Models\User;
 use App\Models\Role;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+/**
+* Class UserController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class manages user listing, creation, editing, role assignment, and deletion.
+*/
 class UserController extends Controller
 {
     /**
@@ -15,7 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')
-            ->select('id', 'name', 'email', 'created_at')
+            ->select('id', 'name', 'email', 'created_at', 'avatar_url')
             ->paginate(15);
 
         return Inertia::render('User/IndexUser', [

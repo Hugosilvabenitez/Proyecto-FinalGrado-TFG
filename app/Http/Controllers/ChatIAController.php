@@ -6,6 +6,14 @@ use App\Models\Rom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+/**
+* Class ChatIAController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class sends the conversation context to the AI service and returns game recommendations.
+*/
 class ChatIAController extends Controller
 {
     public function chat(Request $request)

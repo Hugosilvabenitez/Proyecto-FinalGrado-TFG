@@ -6,6 +6,14 @@ use App\Services\AchievementService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
+/**
+* Class GameSessionController (Controller)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This class stores play sessions and reports in-game scores to evaluate achievements.
+*/
 class GameSessionController extends Controller
 {
     public function store(Request $request, AchievementService $achievements): JsonResponse

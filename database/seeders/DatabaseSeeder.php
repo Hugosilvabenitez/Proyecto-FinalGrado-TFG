@@ -8,6 +8,14 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+/**
+* Class DatabaseSeeder (Seeder)
+* 
+* @author Hugo Silva Benitez <hsilben979@g.educaand.es>
+* @date 2026-05-05
+* 
+* This seeder orchestrates the execution of the application's database seeders.
+*/
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -26,7 +34,8 @@ class DatabaseSeeder extends Seeder
             SaveStateSeeder::class,
             AuditLogSeeder::class,
             AchievementSeeder::class,
-           
+            PermissionSeeder::class,
+            UserStatsSeeder::class
         ]);
     }
 }
