@@ -30,7 +30,7 @@ Route::get('/', function () {
 
     $topGames = DB::table('roms')
         ->join('game_sessions', 'roms.id', '=', 'game_sessions.rom_id')
-        ->select('roms.title', DB::raw('COUNT(game_sessions.id) as total'))
+        ->select('roms.title', DB::raw('COUNT(DISTINCT game_sessions.user_id) as total'))
         ->groupBy('roms.id', 'roms.title')
         ->orderByDesc('total')
         ->limit(5)
