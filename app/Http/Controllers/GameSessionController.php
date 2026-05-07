@@ -32,13 +32,16 @@ class GameSessionController extends Controller
             'played_at'      => now(),
         ]);
 
-        $achievements->check(auth()->user(), 'time_played');
+        $unlocked = $achievements->check(auth()->user(), 'time_played');
 
         if ($session->completed) {
-            $achievements->check(auth()->user(), 'games_completed');
+            $unlocked = array_merge($unlocked, $achievements->check(auth()->user(), 'games_completed'));
         }
 
-        return response()->json($session, 201);
+        return response()->json([
+            'session' => $session,
+            'achievements' => $unlocked,
+        ], 201);
     }
 
     public function reportScore(Request $request, AchievementService $achievements): JsonResponse
@@ -47,8 +50,11 @@ class GameSessionController extends Controller
             'score' => 'required|integer|min:0',
         ]);
 
-        $achievements->checkInGame(auth()->user(), $validated['score']);
+        $unlocked = $achievements->checkInGame(auth()->user(), $validated['score']);
 
-        return response()->json(['ok' => true]);
+        return response()->json([
+            'ok' => true,
+            'achievements' => $unlocked,
+        ]);
     }
 }

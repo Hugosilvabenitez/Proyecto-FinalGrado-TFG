@@ -1,11 +1,11 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { startPlaytimeTracker } from '@/services/playtimeTracker';
+import { startPlaytimeTracker, stopPlaytimeTracker } from '@/services/playtimeTracker';
 import GlobalNotifications from '@/Components/GlobalNotifications.vue';
 import { initStats } from '@/state/statsStore';
 
@@ -22,9 +22,20 @@ import { initStats } from '@/state/statsStore';
 const page = usePage();
 const showingNavigationDropdown = ref(false);
 
+watch(
+    () => page.props.auth.user?.id,
+    () => {
+        initStats(page.props.auth.user.stats, page.props.auth.user.id);
+    },
+    { immediate: true }
+);
+
 onMounted(() => {
-    initStats(page.props.auth.user.stats);
     startPlaytimeTracker();
+});
+
+onBeforeUnmount(() => {
+    stopPlaytimeTracker();
 });
 
 const avatarUrl = computed(() => page.props.auth.user.avatar_url);
@@ -204,6 +215,7 @@ const themeStyle = computed(() => ({
         <main class="min-h-[calc(100vh-4rem)]">
             <slot />
         </main>
+
+        <GlobalNotifications />
     </div>
-    <GlobalNotifications />
 </template>

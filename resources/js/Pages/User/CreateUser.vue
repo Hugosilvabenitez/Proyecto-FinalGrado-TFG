@@ -20,7 +20,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const form = useForm({
-    username: '',
+    name: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -106,13 +106,13 @@ defineOptions({
                                         Nombre de usuario
                                     </label>
                                     <input
-                                        v-model="form.username"
+                                        v-model="form.name"
                                         type="text"
                                         placeholder="ej: jugador123"
                                         class="gf-input w-full rounded-2xl px-4 py-3 transition"
                                     />
-                                    <p v-if="form.errors.username" class="mt-1 text-xs" :style="{ color: 'var(--gf-danger-text)' }">
-                                        {{ form.errors.username }}
+                                    <p v-if="form.errors.name" class="mt-1 text-xs" :style="{ color: 'var(--gf-danger-text)' }">
+                                        {{ form.errors.name }}
                                     </p>
                                 </div>
 
@@ -223,7 +223,7 @@ defineOptions({
                                     Usuario
                                 </p>
                                 <p class="mt-2 text-lg font-bold">
-                                    {{ form.username || 'jugador123' }}
+                                    {{ form.name || 'jugador123' }}
                                 </p>
 
                                 <p class="gf-text-subtle mt-4 text-xs uppercase tracking-[0.24em]">
