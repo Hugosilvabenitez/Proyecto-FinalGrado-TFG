@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { addPlaytime, addAchievements } from '@/state/statsStore';
+import { addPlaytime, addAchievements, initStats } from '@/state/statsStore';
 import { useNotifications } from '@/state/notificationStore';
 
 /**
@@ -42,6 +42,10 @@ export function startPlaytimeTracker() {
                         icon: a.icon
                     });
                 });
+            }
+
+            if (data.stats) {
+                initStats(data.stats);
             }
 
         } catch (e) {

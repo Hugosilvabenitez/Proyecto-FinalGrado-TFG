@@ -32,6 +32,15 @@ const scrollToBottom = async () => {
     bottomRef.value?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 };
 
+const resizeInput = async () => {
+    await nextTick();
+
+    if (!inputRef.value) return;
+
+    inputRef.value.style.height = '44px';
+    inputRef.value.style.height = `${Math.min(inputRef.value.scrollHeight, 128)}px`;
+};
+
 watch(
     () => messages.value.length,
     () => {
@@ -39,8 +48,13 @@ watch(
     }
 );
 
+watch(userInput, () => {
+    resizeInput();
+});
+
 onMounted(() => {
     scrollToBottom();
+    resizeInput();
     inputRef.value?.focus();
 });
 
@@ -50,6 +64,7 @@ const sendMessage = async () => {
 
     messages.value.push({ role: 'user', content: text });
     userInput.value = '';
+    await resizeInput();
     loading.value = true;
 
     try {
@@ -168,9 +183,11 @@ defineOptions({
                                 </div>
 
                                 <div v-if="loading" class="flex items-end gap-2 justify-start">
-                                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 text-sm shadow-[0_0_14px_rgba(56,189,248,0.6)]">
-                                        🎮
-                                    </div>
+                                    <img
+                                        src="/images/santiago-ia.png"
+                                        alt="Santiago IA"
+                                        class="h-10 w-10 rounded-full object-cover border-4 border-cyan-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.75)] group-hover:scale-110 transition-transform"
+                                    />
 
                                     <div class="gf-message-assistant rounded-2xl rounded-bl-sm px-4 py-3 backdrop-blur-2xl">
                                         <span class="flex items-center gap-1.5">
@@ -185,15 +202,15 @@ defineOptions({
                             </div>
                         </div>
 
-                        <div class="gf-panel-strong border-t p-4 sm:p-5" :style="{ borderColor: 'var(--gf-line)' }">
-                            <div class="gf-panel-soft mx-auto flex max-w-4xl items-end gap-3 rounded-[1.5rem] p-3 backdrop-blur-2xl">
+                        <div class="gf-panel-strong border-t px-4 py-3 sm:px-5 sm:py-4" :style="{ borderColor: 'var(--gf-line)' }">
+                            <div class="gf-panel-soft mx-auto flex w-full max-w-4xl items-end gap-2 rounded-2xl p-2.5 backdrop-blur-2xl sm:gap-3">
                                 <textarea
                                     ref="inputRef"
                                     v-model="userInput"
                                     @keydown="handleKeydown"
                                     placeholder="Escribe tu mensaje..."
                                     rows="1"
-                                    class="max-h-40 flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-100 placeholder:text-slate-500 outline-none border-none ring-0 focus:ring-0 focus:outline-none"
+                                    class="min-h-11 max-h-32 flex-1 resize-none overflow-y-auto bg-transparent px-3 py-2.5 text-sm leading-6 text-slate-100 placeholder:text-slate-500 outline-none border-none ring-0 focus:ring-0 focus:outline-none"
 
                                 ></textarea>
 
@@ -201,7 +218,7 @@ defineOptions({
                                     type="button"
                                     @click="sendMessage"
                                     :disabled="loading || !userInput.trim()"
-                                    class="gf-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+                                    class="gf-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-xl disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
                                 >
                                     <svg
                                         class="h-4 w-4"

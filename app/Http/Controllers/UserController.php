@@ -39,8 +39,8 @@ class UserController extends Controller
          $roles = Role::all();
 
         return Inertia::render('User/CreateUser', [
-    'roles' => $roles
-]);
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -55,15 +55,20 @@ class UserController extends Controller
             'roles' => 'array'
         ]);
 
+        $cleanSeed = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($request['email']));
+        $seed = substr($cleanSeed, 0, 20);
+        $avatarUrl = "https://api.dicebear.com/9.x/fun-emoji/svg?seed={$seed}&backgroundColor=1d1440&radius=50";
+
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
+            'avatar_url' => $avatarUrl
         ]);
 
         // Asignar roles si se han seleccionado
-        if (!empty($validated['roles'])) {
-            $user->roles()->sync($validated['roles']);
+        if (!empty($validatedData['roles'])) {
+            $user->roles()->sync($validatedData['roles']);
         }
 
         // Crear configuración por defecto

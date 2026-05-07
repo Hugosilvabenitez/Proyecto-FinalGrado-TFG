@@ -22,12 +22,29 @@ class UserStatsController extends Controller
     {
         $user = auth()->user();
 
-        $user->stats->increment('total_minutes', $request->minutes);
+        $data = $request->validate([
+            'minutes' => ['required', 'integer', 'min:1', 'max:1440'],
+        ]);
+
+        $stats = $user->stats()->firstOrCreate([], [
+            'total_minutes' => 0,
+            'cloud_saves' => 0,
+            'achievements_unlocked' => 0,
+        ]);
+
+        $stats->increment('total_minutes', $data['minutes']);
+        $stats->refresh();
 
         $unlocked = $service->check($user, 'time_played');
+        $stats->refresh();
 
         return response()->json([
             'success' => true,
+            'stats' => [
+                'total_minutes' => (int) $stats->total_minutes,
+                'cloud_saves' => (int) $stats->cloud_saves,
+                'achievements_unlocked' => (int) $stats->achievements_unlocked,
+            ],
             'achievements' => $unlocked
         ]);
     }
@@ -74,6 +91,9 @@ class UserStatsController extends Controller
 
         if ($saveState->wasRecentlyCreated) {
             $user->stats()->firstOrCreate()->increment('cloud_saves');
+        } else {
+            $saveState->touch();
+            $saveState->refresh();
         }
 
         return response()->json([

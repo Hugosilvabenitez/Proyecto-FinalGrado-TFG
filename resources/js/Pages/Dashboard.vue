@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { useStats } from '@/state/statsStore';
+import { initStats, setCloudSaves, useStats } from '@/state/statsStore';
 
 /**
 * Dashboard View
@@ -25,9 +25,8 @@ const props = defineProps({
 
 const stats = useStats();
 
-stats.total_minutes = props.auth.user.stats?.total_minutes || 0;
-stats.cloud_saves = props.savedGames.length;
-stats.achievements_unlocked = props.auth.user.stats?.achievements_unlocked || 0;
+initStats(props.auth.user.stats, props.auth.user.id);
+setCloudSaves(props.savedGames.length);
 
 const formattedTime = computed(() => {
     const minutes = stats.total_minutes || 0;
@@ -164,7 +163,7 @@ defineOptions({
                 <div class="flex flex-col justify-center gap-3 sm:flex-row">
                     <Link
                         :href="route('play')"
-                        class="gf- button-primary w-full rounded-2xl px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-all disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                        class="gf-button-primary w-full rounded-2xl px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-all disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
                         Nueva partida
                     </Link>
@@ -238,7 +237,7 @@ defineOptions({
                             :href="save.rom.play_url"
                             class="gf-panel-strong gf-panel-hover-accent flex min-w-0 items-center gap-4 rounded-2xl p-4 no-underline transition-all"
                         >
-                            <div class="flex h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
+                            <div class="flex h-20 w-16 shrink-0 overflow-hidden rounded-xl border shadow-lg" :style="{ borderColor: 'var(--gf-line)', background: 'linear-gradient(135deg, var(--gf-accent), var(--gf-secondary))' }">
                                 <img
                                     v-if="save.rom.cover_image"
                                     :src="save.rom.cover_image"
@@ -294,7 +293,7 @@ defineOptions({
                             class="gf-panel-strong group min-w-0 rounded-2xl p-4 no-underline transition-all"
                             :class="game.hoverClass"
                         >
-                            <div class="mb-3 h-28 w-full overflow-hidden rounded-xl bg-slate-950 shadow-lg transition-transform group-hover:scale-[1.02]">
+                            <div class="mb-3 h-28 w-full overflow-hidden rounded-xl shadow-lg transition-transform group-hover:scale-[1.02]" :style="{ background: 'var(--gf-panel-strong)' }">
                                 <img
                                     :src="game.image"
                                     :alt="`Imagen recomendada de ${game.title}`"
