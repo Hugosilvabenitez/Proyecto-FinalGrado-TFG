@@ -21,7 +21,8 @@ class SaveState extends Model
         'rom_id',
         'slot_number',
         'save_name',
-        'save_path'
+        'save_path',
+        'save_data'
     ];
 /**
 * ONE PARTIE SAVED BELONGS TO AN USER

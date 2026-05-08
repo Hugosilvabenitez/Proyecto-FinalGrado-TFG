@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/stats/playtime', [UserStatsController::class, 'addPlayTime']);
     Route::post('/stats/save', [UserStatsController::class, 'addCloudSave']);
     Route::post('/stats/save-state', [UserStatsController::class, 'registerCloudSave'])->name('save-states.register');
+    Route::get('/stats/save-state', [UserStatsController::class, 'retrieveCloudSave'])->name('save-states.retrieve');
     Route::post('/stats/achievement', [UserStatsController::class, 'addAchievement']);
 });
 

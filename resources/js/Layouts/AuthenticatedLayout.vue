@@ -212,7 +212,7 @@ const themeStyle = computed(() => ({
             </div>
         </nav>
 
-        <main class="min-h-[calc(100vh-4rem)]">
+        <main class="min-h-[calc(100vh-4rem)] overflow-y-auto">
             <slot />
         </main>
 

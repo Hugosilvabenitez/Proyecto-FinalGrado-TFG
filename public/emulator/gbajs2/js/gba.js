@@ -315,22 +315,47 @@ class GameBoyAdvance {
 	}
 	getSavedataKey() {
 		var saveScope = "guest";
+		var saveVersion = "default";
+		var romId = "unknown";
 		try {
 			var params = new URLSearchParams(window.location.search);
 			saveScope = params.get("save_scope") || saveScope;
+			saveVersion = params.get("save_version") || saveVersion;
+			romId = params.get("rom_id") || romId;
 		} catch (e) {
 			this.WARN("Could not resolve save owner! " + e);
 		}
 
-		return this.SYS_ID + ".user." + saveScope + "." + this.mmu.cart.code;
+		return this.SYS_ID + ".user." + saveScope + "." + saveVersion + ".rom." + romId;
+	}
+	clearStaleSavedata() {
+		try {
+			var params = new URLSearchParams(window.location.search);
+			var saveScope = params.get("save_scope") || "guest";
+			var saveVersion = params.get("save_version") || "default";
+			var storage = window.localStorage;
+			var prefix = this.SYS_ID + ".user." + saveScope + ".";
+			var keepSuffix = "." + saveVersion + ".rom.";
+
+			for (var i = storage.length - 1; i >= 0; i--) {
+				var key = storage.key(i);
+				if (key && key.startsWith(prefix) && !key.includes(keepSuffix)) {
+					storage.removeItem(key);
+				}
+			}
+		} catch (e) {
+			this.WARN("Could not cleanup stale save data! " + e);
+		}
 	}
 	registerCloudSave(saveKey) {
 		try {
 			var params = new URLSearchParams(window.location.search);
 			var saveStateUrl = params.get("save_state_url");
 			var romId = params.get("rom_id");
+			var storage = window.localStorage;
+			var saveData = storage[saveKey] || "";
 
-			if (!saveStateUrl || !romId || !window.fetch) {
+			if (!saveStateUrl || !romId || !window.fetch || !saveData) {
 				return;
 			}
 
@@ -345,7 +370,8 @@ class GameBoyAdvance {
 				body: JSON.stringify({
 					rom_id: romId,
 					slot_number: 1,
-					save_key: saveKey
+					save_key: saveKey,
+					save_data: saveData
 				})
 			}).catch(function () {});
 		} catch (e) {
@@ -367,8 +393,43 @@ class GameBoyAdvance {
 	}
 	retrieveSavedata() {
 		try {
+			this.clearStaleSavedata();
 			var storage = window.localStorage;
-			var data = storage[this.getSavedataKey()];
+			var saveKey = this.getSavedataKey();
+			var data = storage[saveKey];
+			if (!data) {
+				var params = new URLSearchParams(window.location.search);
+				var saveStateUrl = params.get("save_state_url");
+				var romId = params.get("rom_id");
+
+				if (saveStateUrl && romId && window.XMLHttpRequest) {
+					try {
+						var url = saveStateUrl + '?rom_id=' + encodeURIComponent(romId);
+						var xhr = new window.XMLHttpRequest();
+						xhr.open('GET', url, false);
+						xhr.withCredentials = true;
+						xhr.setRequestHeader('Accept', 'application/json');
+						xhr.send(null);
+
+						if (xhr.status >= 200 && xhr.status < 300) {
+							var payload = {};
+							try {
+								payload = JSON.parse(xhr.responseText || '{}');
+							} catch (e) {
+								this.WARN('Could not parse cloud save response! ' + e);
+							}
+
+							if (payload.success && payload.save_data) {
+								data = payload.save_data;
+								storage[saveKey] = data;
+							}
+						}
+					} catch (e) {
+						this.WARN('Could not fetch cloud savedata! ' + e);
+					}
+				}
+			}
+
 			if (data) {
 				this.decodeSavedata(data);
 				return true;
