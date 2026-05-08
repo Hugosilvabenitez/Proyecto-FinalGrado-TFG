@@ -71,11 +71,21 @@ class UserStatsController extends Controller
             'rom_id' => ['required', 'integer', 'exists:roms,id'],
             'slot_number' => ['nullable', 'integer', 'min:1', 'max:99'],
             'save_key' => ['required', 'string', 'max:255', 'starts_with:com.endrift.gbajs.user.'],
+            'save_data' => ['nullable', 'string'],
         ]);
 
         $user = auth()->user();
         $rom = Rom::query()->findOrFail($data['rom_id']);
         $slotNumber = $data['slot_number'] ?? 1;
+
+        $attributes = [
+            'save_name' => $rom->title.' - Slot '.$slotNumber,
+            'save_path' => $data['save_key'],
+        ];
+
+        if (isset($data['save_data']) && $data['save_data'] !== '') {
+            $attributes['save_data'] = $data['save_data'];
+        }
 
         $saveState = SaveState::query()->updateOrCreate(
             [
@@ -83,10 +93,7 @@ class UserStatsController extends Controller
                 'rom_id' => $rom->id,
                 'slot_number' => $slotNumber,
             ],
-            [
-                'save_name' => $rom->title.' - Slot '.$slotNumber,
-                'save_path' => $data['save_key'],
-            ]
+            $attributes
         );
 
         if ($saveState->wasRecentlyCreated) {
@@ -99,6 +106,28 @@ class UserStatsController extends Controller
         return response()->json([
             'success' => true,
             'save_state' => $saveState,
+        ]);
+    }
+
+    public function retrieveCloudSave(Request $request)
+    {
+        $data = $request->validate([
+            'rom_id' => ['required', 'integer', 'exists:roms,id'],
+        ]);
+
+        $saveState = SaveState::query()
+            ->where('user_id', auth()->id())
+            ->where('rom_id', $data['rom_id'])
+            ->orderByDesc('slot_number')
+            ->first();
+
+        if (!$saveState || !$saveState->save_data) {
+            return response()->json(['success' => false], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'save_data' => $saveState->save_data,
         ]);
     }
 

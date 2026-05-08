@@ -135,7 +135,7 @@ defineOptions({
 <template>
     <Head title="Dashboard · GameFlux" />
 
-    <div class="gf-page relative min-h-screen overflow-x-hidden">
+    <div class="gf-page relative h-full min-h-0 overflow-hidden">
         <div class="pointer-events-none absolute inset-0">
             <div class="gf-page-orb-primary absolute -top-32 -left-24 h-72 w-72"></div>
             <div class="gf-page-orb-secondary absolute -bottom-40 -right-20 h-80 w-80"></div>

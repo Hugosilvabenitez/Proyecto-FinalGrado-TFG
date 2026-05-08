@@ -35,7 +35,7 @@ class ChatIAController extends Controller
             ->map(fn($rom) => "- {$rom->title} ({$rom->region}): {$rom->description}")
             ->join("\n");
 
-        $systemPrompt = "No muestres tu razonamiento interno. Responde directamente sin usar etiquetas <think>.\n\n" .
+        $systemPrompt = "No muestres tu razonamiento interno.Si el usuario te pregunta por algun tema que no sea videojuegos indicale que eres experto en videojuegos y que no sabes de otros temas, pero bajo ningun concepto respondas a su peticion si no tiene que ver de videojuegos. Responde directamente sin usar etiquetas <think>.\n\n" .
             "Eres un asistente experto en videojuegos retro de GameFlux, una plataforma de emulación de Game Boy Advance.\n" .
             "Tu objetivo es recomendar al usuario el juego perfecto de entre los disponibles en la plataforma.\n\n" .
             "Para ello debes hacer las siguientes preguntas UNA A UNA, esperando la respuesta del usuario antes de continuar:\n" .

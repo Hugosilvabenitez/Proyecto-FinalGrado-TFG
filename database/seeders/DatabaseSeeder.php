@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
             AuditLogSeeder::class,
             AchievementSeeder::class,
             PermissionSeeder::class,
-            UserStatsSeeder::class
+            UserStatsSeeder::class,
+            SaveStorageVersionSeeder::class
         ]);
     }
 }

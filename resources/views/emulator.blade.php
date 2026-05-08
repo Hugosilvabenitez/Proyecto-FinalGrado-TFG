@@ -127,9 +127,93 @@
             const backgroundPresets = @json($backgroundPresets);
             const currentPreferences = @json($emulatorPreferences);
             const activeTheme = @json($activeTheme);
+            const gameSessionUrl = @json(route('game-sessions.store'));
+            const romId = @json((string) $rom->id);
+            const csrfToken = @json(csrf_token());
 
             const frame = document.getElementById('emulator-frame');
             const frameShell = document.getElementById('emulator-frame-shell');
+            const minimumSessionMs = 60000;
+
+            let accumulatedVisibleMs = 0;
+            let lastVisibleAt = document.visibilityState === 'visible' ? Date.now() : null;
+            let sessionReported = false;
+
+            function accumulateVisibleTime() {
+                if (lastVisibleAt === null) {
+                    return;
+                }
+
+                accumulatedVisibleMs += Math.max(0, Date.now() - lastVisibleAt);
+                lastVisibleAt = null;
+            }
+
+            function resumeVisibleTime() {
+                if (lastVisibleAt !== null || document.visibilityState !== 'visible') {
+                    return;
+                }
+
+                lastVisibleAt = Date.now();
+            }
+
+            function getPlayedMinutes() {
+                const liveVisibleMs = lastVisibleAt === null
+                    ? 0
+                    : Math.max(0, Date.now() - lastVisibleAt);
+                const totalVisibleMs = accumulatedVisibleMs + liveVisibleMs;
+
+                if (totalVisibleMs < minimumSessionMs) {
+                    return 0;
+                }
+
+                return Math.floor(totalVisibleMs / minimumSessionMs);
+            }
+
+            function reportGameSession() {
+                if (sessionReported) {
+                    return;
+                }
+
+                accumulateVisibleTime();
+
+                const minutesPlayed = getPlayedMinutes();
+
+                if (minutesPlayed < 1) {
+                    return;
+                }
+
+                sessionReported = true;
+
+                if (navigator.sendBeacon) {
+                    const payload = new FormData();
+                    payload.append('_token', csrfToken);
+                    payload.append('rom_id', romId);
+                    payload.append('minutes_played', String(minutesPlayed));
+
+                    if (navigator.sendBeacon(gameSessionUrl, payload)) {
+                        return;
+                    }
+
+                    sessionReported = false;
+                }
+
+                fetch(gameSessionUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    keepalive: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        rom_id: romId,
+                        minutes_played: minutesPlayed,
+                    }),
+                }).catch(() => {
+                    sessionReported = false;
+                });
+            }
 
             function normalizeVolume(value) {
                 const parsed = Number(value);
@@ -319,6 +403,27 @@
 
             frame.addEventListener('load', () => {
                 window.setTimeout(syncPreferencesToFrame, 150);
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'hidden') {
+                    accumulateVisibleTime();
+                    return;
+                }
+
+                resumeVisibleTime();
+            });
+
+            window.addEventListener('pagehide', reportGameSession);
+            window.addEventListener('beforeunload', reportGameSession);
+            window.addEventListener('pageshow', (event) => {
+                if (!event.persisted) {
+                    return;
+                }
+
+                accumulatedVisibleMs = 0;
+                lastVisibleAt = document.visibilityState === 'visible' ? Date.now() : null;
+                sessionReported = false;
             });
 
             syncPreferencesToFrame();

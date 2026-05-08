@@ -88,6 +88,7 @@ class PlayController extends Controller
             'emulatorIndexUrl' => $emulatorIndexUrl
                 .'?rom='.rawurlencode($romUrl)
                 .'&save_scope='.rawurlencode($saveScope)
+                .'&save_version='.rawurlencode($this->saveStorageVersion())
                 .'&rom_id='.rawurlencode((string) $rom->id)
                 .'&save_state_url='.rawurlencode(route('save-states.register'))
                 .'&csrf_token='.rawurlencode(csrf_token()),
@@ -97,6 +98,17 @@ class PlayController extends Controller
             'activeTheme' => UserSettings::resolveThemeConfig($request->user()?->config),
             'profileUrl' => route('profile.edit'),
         ]);
+    }
+
+    private function saveStorageVersion(): string
+    {
+        $versionPath = storage_path('app/emulator_save_version.txt');
+
+        if (!file_exists($versionPath)) {
+            return hash_hmac('sha256', 'emulator.save.version', config('app.key'));
+        }
+
+        return trim(file_get_contents($versionPath)) ?: hash_hmac('sha256', 'emulator.save.version', config('app.key'));
     }
 
     public function updatePreferences(Request $request): JsonResponse

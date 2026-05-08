@@ -30,7 +30,7 @@ Route::get('/', function () {
 
     $topGames = DB::table('roms')
         ->join('game_sessions', 'roms.id', '=', 'game_sessions.rom_id')
-        ->select('roms.title', DB::raw('COUNT(game_sessions.id) as total'))
+        ->select('roms.title', DB::raw('COUNT(DISTINCT game_sessions.user_id) as total'))
         ->groupBy('roms.id', 'roms.title')
         ->orderByDesc('total')
         ->limit(5)
@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/stats/playtime', [UserStatsController::class, 'addPlayTime']);
     Route::post('/stats/save', [UserStatsController::class, 'addCloudSave']);
     Route::post('/stats/save-state', [UserStatsController::class, 'registerCloudSave'])->name('save-states.register');
+    Route::get('/stats/save-state', [UserStatsController::class, 'retrieveCloudSave'])->name('save-states.retrieve');
     Route::post('/stats/achievement', [UserStatsController::class, 'addAchievement']);
 });
 
